@@ -8,8 +8,10 @@ import { Footer } from "@/front/components/sections/Footer";
 import { Header } from "@/front/components/sections/Header";
 import { Hero } from "@/front/components/sections/Hero";
 import { Impacts } from "@/front/components/sections/Impacts";
+import { Infos } from "@/front/components/sections/Infos";
 import { Mission } from "@/front/components/sections/Mission";
 import { Objectifs } from "@/front/components/sections/Objectifs";
+import { PromotedInfoModal } from "@/front/components/sections/PromotedInfoModal";
 import { Rejoindre } from "@/front/components/sections/Rejoindre";
 import { TEXT_POOL } from "@/front/lib/copy";
 import { DEFAULT_LANG, Lang, useAutoI18n } from "@/front/lib/i18n";
@@ -55,6 +57,7 @@ export default function TechPourScienceLandingImmersive() {
 
   return (
   <main className="min-h-screen bg-gradient-to-b from-white to-[#e8fbfd] dark:from-black dark:to-slate-950 text-slate-900 dark:text-white transition-colors">
+      <PromotedInfoModal />
       <Header
         lang={lang}
         t={t}
@@ -64,6 +67,7 @@ export default function TechPourScienceLandingImmersive() {
       <Hero t={t} scene={scene} setScene={setScene} />
   <Features t={t} />
       <Mission t={t} />
+  <Infos t={t} />
   <Objectifs t={t} />
   <Ateliers t={t} />
   <Impacts t={t} />

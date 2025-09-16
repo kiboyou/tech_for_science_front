@@ -14,7 +14,7 @@ export function Blog({ t }: { t: (s: string) => string }) {
     tag: "",
     excerpt: p.excerpt || "",
     cover: p.cover_image || undefined,
-  })) : COPY.blogPosts);
+  })) : []);
   return (
   <section id="blog" className="py-20 scroll-mt-24">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
@@ -24,6 +24,9 @@ export function Blog({ t }: { t: (s: string) => string }) {
       {t(COPY.blogVoirTout)}
     </a>
   </div>
+  {items.length === 0 ? (
+    <p className="mt-10 text-center text-slate-500">Aucun article disponible.</p>
+  ) : (
   <div className="mt-10 grid md:grid-cols-3 gap-6">
           {items.map((p, i) => (
             <AnimatedReveal key={p.title} delay={i * 0.08} effect={i % 2 ? "zoomIn" : "fadeUp"}>
@@ -44,6 +47,7 @@ export function Blog({ t }: { t: (s: string) => string }) {
             </AnimatedReveal>
           ))}
         </div>
+  )}
       </div>
     </section>
   );

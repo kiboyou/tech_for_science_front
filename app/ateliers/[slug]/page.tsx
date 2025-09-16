@@ -16,13 +16,17 @@ export default async function AtelierDetail({ params }: { params: { slug: string
     title: dto.title,
     desc: dto.summary || "",
     meta: [dto.location, dto.start_date ? new Date(dto.start_date).toLocaleDateString() : ""].filter(Boolean).join(" — "),
+    content: dto.content || "",
+    location: dto.location || "",
+    startDate: dto.start_date || null,
     image: dto.cover_image || undefined,
+    video: dto.video_url || undefined,
     images: (dto.images || []).map(i => i.image_url) as readonly string[],
   };
   return (
     <div className="min-h-screen flex flex-col">
       <ClientHeader />
-      <main className="flex-1 mx-auto max-w-screen-md px-4 sm:px-6 lg:px-8 py-16">
+      <main className="flex-1">
         <AtelierDetailClient item={item} />
       </main>
       <ClientFooter />

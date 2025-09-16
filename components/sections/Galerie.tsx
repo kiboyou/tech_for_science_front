@@ -4,14 +4,7 @@ import { MediaGrid } from "@/front/components/ui/MediaGrid";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 
 export function Galerie({ t }: { t: (s: string) => string }) {
-  const items = [
-    { type: "image", src: "/media/sample-1.jpg", alt: "Atelier 1" },
-    { type: "image", src: "/media/sample-2.jpg", alt: "Atelier 2" },
-    { type: "video", src: "/media/sample-clip.mp4", poster: "/media/sample-3.jpg" },
-    { type: "image", src: "/media/sample-4.jpg", alt: "Atelier 3" },
-    { type: "image", src: "/media/sample-5.jpg", alt: "Atelier 4" },
-    { type: "image", src: "/media/sample-6.jpg", alt: "Atelier 5" },
-  ] as const;
+  const items: any[] = [];
   return (
     <AnimatedReveal>
   <section id="galerie" className="py-20 scroll-mt-24">
@@ -23,9 +16,13 @@ export function Galerie({ t }: { t: (s: string) => string }) {
             </a>
           </div>
         </div>
-        <div className="mt-6 sm:mt-8 lg:mt-10">
-          <MediaGrid items={items as any} t={t} />
-        </div>
+        {items.length === 0 ? (
+          <p className="mt-8 text-center text-slate-500">Aucun média pour le moment.</p>
+        ) : (
+          <div className="mt-6 sm:mt-8 lg:mt-10">
+            <MediaGrid items={items as any} t={t} />
+          </div>
+        )}
       </section>
     </AnimatedReveal>
   );

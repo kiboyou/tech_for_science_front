@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { api, AtelierDTO, BlogPostDTO, TeamMemberDTO } from "./api";
+import { api, AtelierDTO, BlogPostDTO, InfoDTO, TeamMemberDTO } from "./api";
 
 export function useAteliers() {
   const [data, setData] = useState<AtelierDTO[] | null>(null);
@@ -23,5 +23,13 @@ export function useEquipe() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => { api.getEquipe().then(setData).catch(e=>setError(String(e))).finally(()=>setLoading(false)); }, []);
+  return { data, loading, error };
+}
+
+export function useInfos(type?: string) {
+  const [data, setData] = useState<InfoDTO[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => { api.getInfos(type).then(setData).catch(e=>setError(String(e))).finally(()=>setLoading(false)); }, [type]);
   return { data, loading, error };
 }

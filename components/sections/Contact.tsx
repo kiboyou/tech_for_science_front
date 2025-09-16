@@ -24,8 +24,8 @@ export function Contact({ t }: { t: (s: string) => string }) {
                 <h3 className="font-semibold text-edu-heading">{t("Coordonnées")}</h3>
                 <p className="mt-2 text-sm text-edu-body">{t("Écrivez-nous pour toute question ou idée. Nous répondons sous 24-48h.")}</p>
                 <div className="mt-4 space-y-3 text-sm">
-                  <div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[rgba(241,192,22,0.2)]">📧</span> contact@techpourscience.org</div>
-                  <div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[rgba(241,192,22,0.2)]">📞</span> +225 •••• •• ••</div>
+                  <div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[rgba(241,192,22,0.2)]">📧</span>techpourscience@gmail.com</div>
+                  <div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[rgba(241,192,22,0.2)]">📞</span> +225 07 88 83 06 33 / 59 56 97 09</div>
                 </div>
                 <div className="mt-6 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-white/10"/>
                 <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">{t("Vos informations ne sont utilisées que pour vous répondre.")}</p>

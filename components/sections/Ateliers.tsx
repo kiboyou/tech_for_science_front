@@ -15,7 +15,7 @@ export function Ateliers({ t }: { t: (s: string) => string }) {
     meta: [a.location, a.start_date ? new Date(a.start_date).toLocaleDateString() : ""].filter(Boolean).join(" — "),
     image: a.cover_image || undefined,
     images: a.images?.map(i => i.image_url) as readonly string[] | undefined,
-  })) : COPY.ateliersItems);
+  })) : []);
   return (
   <section id="ateliers" className="py-20 scroll-mt-24">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
@@ -26,6 +26,9 @@ export function Ateliers({ t }: { t: (s: string) => string }) {
           </a>
         </div>
   {/* Removed 'Voir le calendrier complet' button per request */}
+        {(!loading && items.length === 0) ? (
+          <p className="mt-8 text-center text-slate-500">Aucun atelier disponible.</p>
+        ) : (
         <div className="mt-8 grid md:grid-cols-3 gap-6">
           {items.map((a, i) => (
             <AnimatedReveal key={a.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
@@ -57,6 +60,7 @@ export function Ateliers({ t }: { t: (s: string) => string }) {
             </AnimatedReveal>
           ))}
         </div>
+        )}
       </div>
     </section>
   );
