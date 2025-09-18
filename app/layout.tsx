@@ -1,6 +1,4 @@
-import { Global3DBackground } from '@/front/components/3d/Background3D'
 import { BackToTop } from '@/front/components/ui/BackToTop'
-import { GooeyBlobs } from '@/front/components/ui/GooeyBlobs'
 import { ScrollProgress } from '@/front/components/ui/ScrollProgress'
 import type { Metadata } from 'next'
 import './globals.css'
@@ -21,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <title>Tech Pour Science</title>
         <meta name="description" content="Immersive 3D science education landing page" />
       </head>
-      <body className="min-h-screen antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 overflow-x-hidden">
+  <body className="min-h-screen antialiased bg-gradient-to-br from-white via-[#f5f9fb] to-[#e8f2f6] dark:from-black dark:via-slate-950 dark:to-slate-900 text-slate-900 dark:text-slate-100 overflow-x-hidden">
         {/* No-flash theme script */}
         <script
           dangerouslySetInnerHTML={{
@@ -42,8 +40,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `,
           }}
         />
-        <Global3DBackground />
-        <GooeyBlobs />
         <ScrollProgress />
         <BackToTop />
         {children}

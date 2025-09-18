@@ -1,7 +1,6 @@
 "use client";
 import { ClientFooter } from "@/front/components/sections/ClientFooter";
 import { ClientHeader } from "@/front/components/sections/ClientHeader";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { TiltCard } from "@/front/components/ui/TiltCard";
 import { api, AtelierDTO } from "@/front/lib/api";
@@ -54,18 +53,14 @@ export default function AteliersIndex() {
             ))}
           </div>
         ) : null}
-        <AnimatedReveal>
-          <p className="mt-2 text-center text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            {t("Listing des ateliers à venir.")}
-          </p>
-        </AnimatedReveal>
+        {/* Removed redundant descriptive listing sentence per request */}
         {!(ateliers || []).length ? (
           <p className="mt-10 text-center text-slate-500">Aucun atelier disponible.</p>
         ) : (
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {(ateliers || []).map((a, i) => (
-            <AnimatedReveal key={a.title} delay={i * 0.06} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
-      <TiltCard className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5">
+            <div key={a.title} className={`anim-fade-up ${i===0?'':'anim-delay-'+((i%5)+1)}`}>
+      <TiltCard className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5 transition-transform will-change-transform">
                 <article className="p-6">
                   <div className="text-sm text-slate-400">{a.start_date ? new Date(a.start_date).toLocaleString() : ""}</div>
                   <h3 className="mt-3 font-semibold text-lg">{a.title}</h3>
@@ -76,7 +71,7 @@ export default function AteliersIndex() {
                   </div>
                 </article>
               </TiltCard>
-            </AnimatedReveal>
+            </div>
           ))}
         </div>
         )}

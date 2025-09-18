@@ -1,7 +1,7 @@
 "use client";
 import { ClientFooter } from "@/front/components/sections/ClientFooter";
 import { ClientHeader } from "@/front/components/sections/ClientHeader";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { api } from "@/front/lib/api";
 import { useAutoI18n } from "@/front/lib/i18n";
@@ -57,7 +57,7 @@ export default function InfosIndex() {
 								))}
 							</div>
 						) : null}
-						<AnimatedReveal>
+						<Reveal>
 					{loading ? (
 						<p className="mt-10 text-center text-slate-500">Chargement…</p>
 					) : !data || !data.length ? (
@@ -89,7 +89,7 @@ export default function InfosIndex() {
 							))}
 						</div>
 					)}
-				</AnimatedReveal>
+				</Reveal>
 			</main>
 			<ClientFooter />
 		</div>

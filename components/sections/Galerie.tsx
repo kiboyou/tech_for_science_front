@@ -1,12 +1,12 @@
 "use client";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
 import { MediaGrid } from "@/front/components/ui/MediaGrid";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 
 export function Galerie({ t }: { t: (s: string) => string }) {
   const items: any[] = [];
   return (
-    <AnimatedReveal>
+  <Reveal>
   <section id="galerie" className="py-20 scroll-mt-24">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <SectionTitle title={t("Galerie")} />
@@ -24,6 +24,6 @@ export function Galerie({ t }: { t: (s: string) => string }) {
           </div>
         )}
       </section>
-    </AnimatedReveal>
+  </Reveal>
   );
 }

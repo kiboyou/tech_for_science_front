@@ -1,4 +1,4 @@
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { TiltCard } from "@/front/components/ui/TiltCard";
 import { COPY } from "@/front/lib/copy";
@@ -31,7 +31,7 @@ export function Ateliers({ t }: { t: (s: string) => string }) {
         ) : (
         <div className="mt-8 grid md:grid-cols-3 gap-6">
           {items.map((a, i) => (
-            <AnimatedReveal key={a.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
+            <Reveal key={a.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
               <TiltCard className="rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <article>
                   {"image" in a && a.image && (
@@ -57,7 +57,7 @@ export function Ateliers({ t }: { t: (s: string) => string }) {
                   </div>
                 </article>
               </TiltCard>
-            </AnimatedReveal>
+            </Reveal>
           ))}
         </div>
         )}

@@ -1,6 +1,6 @@
 "use client";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
 import { Modal } from "@/front/components/ui/Modal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { ArrowRight, HeartHandshake } from "lucide-react";
@@ -19,7 +19,7 @@ export function Rejoindre({ t }: { t: (s: string) => string }) {
   <SectionTitle title={t("Nous rejoindre")} />
   <div className="mt-10 grid md:grid-cols-3 gap-6">
     {COPY.rejoindreCards.map((c, i) => (
-            <AnimatedReveal key={c.title} delay={i * 0.08}>
+            <Reveal key={c.title} delay={i * 0.08}>
               <div className="rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <h3 className="font-semibold flex items-center gap-2">
                   <HeartHandshake className="h-5 w-5" /> {t(c.title)}
@@ -32,7 +32,7 @@ export function Rejoindre({ t }: { t: (s: string) => string }) {
                   {t(c.cta)} <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
-            </AnimatedReveal>
+            </Reveal>
           ))}
         </div>
       </div>

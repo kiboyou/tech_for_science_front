@@ -1,5 +1,5 @@
 "use client";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { useInfos } from "@/front/lib/useApi";
 import { ArrowRight, CalendarClock } from "lucide-react";
@@ -50,7 +50,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
         ) : (
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             {items.slice(0, 3).map((info, i) => (
-              <AnimatedReveal key={info.slug || info.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
+              <Reveal key={info.slug || info.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
                 <article
                   className="group rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm overflow-hidden shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-white/5 cursor-pointer"
                   onClick={() => { if (info.slug) window.location.href = `/infos/${info.slug}`; }}
@@ -109,7 +109,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
                     </div>
                   </div>
                 </article>
-              </AnimatedReveal>
+              </Reveal>
             ))}
           </div>
         )}

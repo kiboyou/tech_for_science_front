@@ -1,5 +1,5 @@
 "use client";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { useEquipe } from "@/front/lib/useApi";
@@ -42,7 +42,7 @@ export function Equipe({ t }: { t: (s: string) => string }) {
     <section id="equipe" className="py-20 scroll-mt-24">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <SectionTitle title={t(COPY.equipeTitle ?? "Notre équipe")} subtitle={t(COPY.equipeSubtitle ?? "Présentation des membres")} />
-        <AnimatedReveal>
+  <Reveal>
           {featured ? (
             <div className="mt-8">
               <article className="relative overflow-hidden rounded-3xl bg-transparent">
@@ -79,7 +79,7 @@ export function Equipe({ t }: { t: (s: string) => string }) {
             </div>
           ) : null}
           
-        </AnimatedReveal>
+  </Reveal>
       </div>
     </section>
   );

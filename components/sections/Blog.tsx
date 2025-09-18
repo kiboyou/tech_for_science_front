@@ -1,4 +1,4 @@
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { slugify } from "@/front/lib/slugify";
@@ -29,7 +29,7 @@ export function Blog({ t }: { t: (s: string) => string }) {
   ) : (
   <div className="mt-10 grid md:grid-cols-3 gap-6">
           {items.map((p, i) => (
-            <AnimatedReveal key={p.title} delay={i * 0.08} effect={i % 2 ? "zoomIn" : "fadeUp"}>
+            <Reveal key={p.title} delay={i * 0.08} effect={i % 2 ? "zoomIn" : "fadeUp"}>
   <article className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
                 {"cover" in p && p.cover && (
                   <div className="relative aspect-[16/9] w-full mb-4 overflow-hidden rounded-xl">
@@ -44,7 +44,7 @@ export function Blog({ t }: { t: (s: string) => string }) {
                   {t(COPY.blogRead)} <ArrowRight className="h-4 w-4" />
                 </a>
               </article>
-            </AnimatedReveal>
+            </Reveal>
           ))}
         </div>
   )}

@@ -1,6 +1,6 @@
 "use client";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
 import { Modal } from "@/front/components/ui/Modal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export function Contact({ t }: { t: (s: string) => string }) {
   <section id="contact" className="py-20 scroll-mt-24">
       <div className="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8">
         <SectionTitle title={t(COPY.contactTitle)} subtitle={t(COPY.contactDesc)} />
-        <AnimatedReveal delay={0.08}>
+  <Reveal delay={0.08}>
           {sent ? (
             <div className="mt-8 rounded-2xl border border-green-200 bg-green-50 text-green-800 p-6 dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-300">
               {t("Merci pour votre message ! Nous vous répondrons sous 24-48h.")}
@@ -54,7 +54,7 @@ export function Contact({ t }: { t: (s: string) => string }) {
               </form>
             </div>
           )}
-        </AnimatedReveal>
+  </Reveal>
       </div>
     <Modal open={successOpen} title={t("Succès")} onClose={()=>setSuccessOpen(false)} closeLabel={t("Fermer")}>
         <div className="flex flex-col items-start gap-3">

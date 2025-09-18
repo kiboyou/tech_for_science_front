@@ -1,4 +1,4 @@
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 
@@ -13,7 +13,7 @@ export function Objectifs({ t }: { t: (s: string) => string }) {
             { title: "Sociaux", points: COPY.sociaux },
             { title: "ODD", points: COPY.odd },
           ].map(({ title, points }, i) => (
-            <AnimatedReveal key={title} delay={i * 0.08} effect={i === 1 ? "slideLeft" : i === 2 ? "slideRight" : "zoomIn"}>
+            <Reveal key={title} delay={i * 0.08} effect={i === 1 ? "slideLeft" : i === 2 ? "slideRight" : "zoomIn"}>
               <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-300 p-7 shadow-sm dark:bg-white/5 dark:border-white/10">
                 <h3 className="text-lg sm:text-xl font-semibold">{t(title)}</h3>
                 <ul className="mt-3 space-y-2 text-base text-slate-700 dark:text-slate-300">
@@ -24,7 +24,7 @@ export function Objectifs({ t }: { t: (s: string) => string }) {
                   ))}
                 </ul>
               </div>
-            </AnimatedReveal>
+            </Reveal>
           ))}
         </div>
       </div>

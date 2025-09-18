@@ -1,7 +1,7 @@
 "use client";
 import { ClientFooter } from "@/front/components/sections/ClientFooter";
 import { ClientHeader } from "@/front/components/sections/ClientHeader";
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { useAutoI18n } from "@/front/lib/i18n";
 import { useBlogPosts } from "@/front/lib/useApi";
@@ -24,7 +24,7 @@ export default function BlogIndex() {
         ) : (
           <div className="mt-8 grid gap-6 md:grid-cols-3">
           {data.map((p, i) => (
-            <AnimatedReveal key={p.title} delay={i * 0.06} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
+            <Reveal key={p.title} delay={i * 0.06} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
               <article className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm overflow-hidden shadow-sm dark:border-white/10 dark:bg-white/5">
                 {p.cover_image && (
                   <div className="relative aspect-[16/9] w-full">
@@ -38,7 +38,7 @@ export default function BlogIndex() {
                   <a href={`/blog/${p.slug}`} className="mt-4 inline-block rounded-2xl border border-slate-400/80 bg-white/50 backdrop-blur-sm px-4 py-2 text-sm text-slate-800 hover:bg-white/80 hover:border-slate-500 transition dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:border-white/30">{t("Lire")}</a>
                 </div>
               </article>
-            </AnimatedReveal>
+            </Reveal>
           ))}
         </div>
         )}

@@ -1,4 +1,4 @@
-import { AnimatedReveal } from "@/front/components/ui/AnimatedReveal";
+import { Reveal } from "@/front/components/ui/Reveal";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { MapPin, Users } from "lucide-react";
@@ -9,7 +9,7 @@ export function Partenaires({ t }: { t: (s: string) => string }) {
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
   <SectionTitle title={t(COPY.partenairesTitle)} />
   <div className="mt-12 grid md:grid-cols-2 gap-7">
-          <AnimatedReveal effect="slideRight">
+          <Reveal effect="slideRight">
             <div className="rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-7 shadow-sm dark:border-white/10 dark:bg-white/5">
               <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                 <MapPin className="h-5 w-5" /> {t("Établissements 2025")}
@@ -22,8 +22,8 @@ export function Partenaires({ t }: { t: (s: string) => string }) {
                 ))}
               </ul>
             </div>
-          </AnimatedReveal>
-          <AnimatedReveal delay={0.1} effect="slideLeft">
+          </Reveal>
+          <Reveal delay={0.1} effect="slideLeft">
   <div className="rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-7 shadow-sm dark:border-white/10 dark:bg-white/5">
               <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                 <Users className="h-5 w-5" /> {t("Partenaires")}
@@ -37,7 +37,7 @@ export function Partenaires({ t }: { t: (s: string) => string }) {
                 ))}
               </div>
             </div>
-          </AnimatedReveal>
+          </Reveal>
         </div>
       </div>
     </section>
