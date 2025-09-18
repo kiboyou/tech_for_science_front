@@ -1,6 +1,6 @@
 // Backend base URL comes from .env.local (NEXT_PUBLIC_BACKEND_URL)
 // Normalize by stripping trailing slash; fallback to dev localhost.
-export const API_BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "")
+export const API_BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8001/")
   .replace(/\/$/, "");
 
 async function fetchJSON<T>(path: string, init?: RequestInit): Promise<T> {
