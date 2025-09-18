@@ -7,9 +7,8 @@ import { api } from "@/front/lib/api";
 import { useAutoI18n } from "@/front/lib/i18n";
 import { useInfos } from "@/front/lib/useApi";
 import { useSharedLang } from "@/front/lib/useLang";
-// import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const TABS = [
 	{ key: "", label: "Tout" },
@@ -18,7 +17,8 @@ const TABS = [
 	{ key: "challenge", label: "Challenges" },
 ];
 
-export default function InfosIndex() {
+// Separate inner component that uses useSearchParams so we can wrap it in <Suspense />
+function InfosIndexInner() {
 	const [lang] = useSharedLang();
 	const t = useAutoI18n(lang, TABS.map(t=>t.label).concat(["Toutes les informations", "Aucune information disponible.", "Voir la procédure", "Voir le détail"])) as (s:string)=>string;
 	const sp = useSearchParams();
@@ -92,6 +92,36 @@ export default function InfosIndex() {
 				</Reveal>
 			</main>
 			<ClientFooter />
+				</div>
+	);
+}
+
+function InfosLoadingFallback() {
+	return (
+		<div className="min-h-screen flex flex-col">
+			<ClientHeader />
+			<main className="flex-1 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
+				<section className="animate-pulse space-y-6">
+					<div className="h-8 w-64 rounded bg-slate-200 dark:bg-slate-700" />
+					<div className="flex gap-2 flex-wrap">
+						{Array.from({ length: 4 }).map((_,i)=>(<div key={i} className="h-8 w-24 rounded-xl bg-slate-200 dark:bg-slate-700" />))}
+					</div>
+					<div className="grid gap-6 md:grid-cols-3">
+						{Array.from({ length: 6 }).map((_,i)=>(
+							<div key={i} className="h-56 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-800" />
+						))}
+					</div>
+				</section>
+			</main>
+			<ClientFooter />
 		</div>
+	);
+}
+
+export default function InfosPage() {
+	return (
+		<Suspense fallback={<InfosLoadingFallback />}> 
+			<InfosIndexInner />
+		</Suspense>
 	);
 }
