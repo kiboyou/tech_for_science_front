@@ -1,33 +1,56 @@
 "use client";
+import { Card } from "@/front/components/ui/Card";
+import { IconBadge } from "@/front/components/ui/IconBadge";
 import { Reveal } from "@/front/components/ui/Reveal";
+import { SectionContainer } from "@/front/components/ui/SectionContainer";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
-import { Beaker, Box, Brain, GalleryHorizontal, Users } from "lucide-react";
+import { Beaker, Box, Brain, Cpu, GalleryHorizontal, Users } from "lucide-react";
+import Image from "next/image";
 
 export function Features({ t }: { t: (s: string) => string }) {
-  // Map icons to items order: Ateliers scientifiques, Expositions virtuelles, Animation 3D, Panels IA, Clubs & Mentorat
-  const icons = [Beaker, GalleryHorizontal, Box, Brain, Users];
+  // Mapping explicite basé sur l'intitulé pour éviter la dépendance à l'ordre
+  const iconMap: Record<string, any> = {
+    "Ateliers scientifiques": Beaker,
+    "Expositions virtuelles": GalleryHorizontal,
+    "Animation 3D": Box,
+    "Panels IA": Cpu,
+    "Clubs & Mentorat": Users,
+  };
   return (
-    <section id="features" className="py-20 scroll-mt-24">
-      <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-        <SectionTitle title={t(COPY.featuresTitle) as any} subtitle={t(COPY.featuresSubtitle) as any} />
-        <div className="mt-12 grid md:grid-cols-3 gap-7">
-          {COPY.featuresItems.map((f: { title: string; desc: string }, i: number) => {
-            const Icon = icons[i % icons.length];
-            return (
-              <Reveal key={f.title} delay={i * 0.06} effect={i % 2 ? "zoomIn" : "fadeUp"}>
-                <div className="rounded-2xl border border-slate-300 bg-white/70 backdrop-blur-sm p-7 h-full shadow-sm dark:border-white/10 dark:bg-white/5">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[rgba(241,192,22,0.20)] to-[rgba(241,192,22,0.30)] grid place-items-center mb-4 dark:from-[rgba(241,192,22,0.30)] dark:to-white/20">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-edu-heading">{t(f.title)}</h3>
-                  <p className="mt-2 text-base text-edu-body">{t(f.desc)}</p>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
+    <SectionContainer id="features">
+      <SectionTitle title={t(COPY.featuresTitle)} subtitle={t(COPY.featuresSubtitle)} />
+      <div className="mt-16 grid gap-16 lg:grid-cols-12 items-start">
+        <Reveal effect="slideLeft" className="lg:col-span-5">
+          <div className="relative group">
+            <div className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-[rgba(241,192,22,0.25)] via-[rgba(241,192,22,0.10)] to-transparent blur-2xl opacity-70 group-hover:opacity-90 transition" />
+            <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/70 dark:ring-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md shadow-sm">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(241,192,22,0.18),transparent_70%)] pointer-events-none" />
+              <Image src="https://res.cloudinary.com/djhpmgfha/image/upload/v1757977673/IMG_0547_qwddc6.jpg" alt="features" width={1000} height={800} className="w-full h-full object-cover aspect-[4/3]" />
+            </div>
+          </div>
+        </Reveal>
+        <Reveal effect="fadeUp" className="lg:col-span-7">
+          <div className="grid sm:grid-cols-2 gap-8">
+            {COPY.featuresItems.map((f: { title: string; desc: string }, i: number) => {
+              const Icon = iconMap[f.title] || Brain;
+              return (
+                <Reveal key={f.title} delay={i * 0.06} effect={i % 2 ? "zoomIn" : "fadeUp"}>
+                  <Card variant="soft" className="flex items-start gap-4 p-5">
+                    <IconBadge tone={i % 3 === 0 ? 'red' : i % 3 === 1 ? 'blue' : 'green'} size="md">
+                      <Icon className="h-5 w-5" />
+                    </IconBadge>
+                    <div>
+                      <h3 className="text-base font-semibold tracking-tight text-edu-heading">{t(f.title)}</h3>
+                      <p className="mt-1 text-sm text-edu-body leading-snug">{t(f.desc)}</p>
+                    </div>
+                  </Card>
+                </Reveal>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
-    </section>
+    </SectionContainer>
   );
 }
