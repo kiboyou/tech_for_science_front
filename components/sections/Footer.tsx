@@ -13,27 +13,31 @@ export function Footer({ t }: { t: (s: string) => string }) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
           {/* Brand and rights */}
           <div className="min-w-0 lg:w-1/3">
-            <p className="text-sm/6 text-white/90">© {new Date().getFullYear()} {t(COPY.brand)}. {t(COPY.footerRights)}</p>
-            <p className="mt-2 text-xs text-white/70">{t("Favoriser l’éducation scientifique avec des ateliers IA, 3D et robotique.")}</p>
+            <p className="text-xs sm:text-sm leading-6 text-white/90 break-words whitespace-normal">© {new Date().getFullYear()} {t(COPY.brand)}. {t(COPY.footerRights)}</p>
+            <p className="mt-2 text-[11px] sm:text-xs text-white/70 break-words whitespace-normal">{t("Favoriser l’éducation scientifique avec des ateliers IA, 3D et robotique.")}</p>
           </div>
 
           {/* Contacts */}
-          <div className="flex-1 grid sm:grid-cols-2 gap-4 lg:gap-6">
-            <a href="mailto:techpourscience@gmail.com" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 hover:bg-white/10 transition">
+          <div className="flex-1 grid sm:grid-cols-2 gap-4 lg:gap-6 min-w-0">
+            <a href="mailto:techpourscience@gmail.com" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 text-xs sm:text-sm leading-5 hover:bg-white/10 transition break-all sm:break-normal">
               <Mail className="h-4 w-4" /> techpourscience@gmail.com
             </a>
-            <span className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95">
-              <Phone className="h-4 w-4" />
-              <a href="tel:+2250759569709" className="hover:underline">+225 0759569709</a>
-              <span className="text-white/60">/</span>
-              <a href="tel:+2250788830633" className="hover:underline">+225 0788830633</a>
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 text-xs sm:text-sm leading-5 max-w-full overflow-x-auto whitespace-nowrap">
+              <span className="inline-flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                <a href="tel:+2250759569709" className="hover:underline">+225 0759569709</a>
+              </span>
+              <span className="inline-flex items-center gap-2 text-white/80">
+                <span className="sm:inline">/</span>
+                <a href="tel:+2250788830633" className="hover:underline">+225 0788830633</a>
+              </span>
             </span>
 
             {/* Socials */}
-            <a href="https://www.facebook.com/TechPourScience" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 hover:bg-white/10 transition">
+            <a href="https://www.facebook.com/TechPourScience" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 text-xs sm:text-sm leading-5 hover:bg-white/10 transition break-words whitespace-normal">
               <Facebook className="h-4 w-4" /> Tech Pour Science
             </a>
-            <a href="https://www.linkedin.com/company/tech-pour-science" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 hover:bg-white/10 transition">
+            <a href="https://www.linkedin.com/company/tech-pour-science" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-3 py-2 text-white/95 text-xs sm:text-sm leading-5 hover:bg-white/10 transition break-words whitespace-normal">
               <Linkedin className="h-4 w-4" /> Tech Pour Science
             </a>
           </div>

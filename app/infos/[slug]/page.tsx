@@ -2,7 +2,7 @@
 import { ClientFooter } from "@/front/components/sections/ClientFooter";
 import { ClientHeader } from "@/front/components/sections/ClientHeader";
 import { API_BASE, InfoDTO } from "@/front/lib/api";
-import { CalendarClock, ExternalLink, Link as LinkIcon, Share2, Tag } from "lucide-react";
+import { CalendarClock, ExternalLink, Link as LinkIcon, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -14,6 +14,7 @@ export default function InfoDetail() {
 	const [data, setData] = useState<InfoDTO | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [coverOk, setCoverOk] = useState(true);
+	const DEFAULT_IMG = 'https://res.cloudinary.com/djhpmgfha/image/upload/v1757529651/WhatsApp_Image_2025-09-10_at_19.29.04_vxld0c.jpg';
 
 	useEffect(() => {
 		fetch(`${API_BASE}/api/main/infos/${encodeURIComponent(slug)}/`).then(r=>r.json()).then(setData).finally(()=>setLoading(false));
@@ -55,7 +56,7 @@ export default function InfoDetail() {
 								<div className="absolute inset-0 bg-white/80 dark:bg-slate-950/70" />
 								<div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/85 to-white/50 dark:from-slate-950/95 dark:via-slate-950/85 dark:to-slate-950/50" />
 							</div>
-							<div className="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8 pt-20 pb-8">
+							<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-8">
 								<div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 backdrop-blur px-3 py-1 text-xs text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
 									<Tag className="h-3.5 w-3.5" /> {data.info_type}
 									{data.deadline ? (
@@ -77,28 +78,33 @@ export default function InfoDetail() {
 									<a href="#procedure" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 bg-white/70 backdrop-blur text-slate-700 hover:bg-white transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">
 										<LinkIcon className="h-4 w-4" /> Voir la procédure
 									</a>
-									<button onClick={() => navigator.share?.({ title: data.title, url: typeof window !== 'undefined' ? window.location.href : '' }).catch(()=>{})}
-										className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 bg-white/70 backdrop-blur text-slate-700 hover:bg-white transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">
-										<Share2 className="h-4 w-4" /> Partager
-									</button>
 								</div>
 							</div>
 						</section>
 
 						{/* Main content with sticky sidebar */}
-						<section className="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8 py-10">
+						<section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
 							<div className="grid lg:grid-cols-12 gap-8">
-								<div className="lg:col-span-8 min-w-0 space-y-6">
+									<div className="lg:col-span-8 min-w-0 space-y-6">
+										{/* Featured image card for better visual impact */}
+										<div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/60 dark:bg-slate-800" style={{ aspectRatio: '16 / 9' }}>
+											<Image
+												src={data.cover_image || DEFAULT_IMG}
+												alt={data.title}
+												fill
+												className="object-cover"
+											/>
+										</div>
 									{data.content ? (
-										<div className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
-											<div className="prose prose-slate dark:prose-invert prose-img:rounded-xl prose-a:text-[rgb(var(--edu-accent))]" dangerouslySetInnerHTML={{ __html: toHtml(data.content) }} />
+											<div className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+												<div className="prose prose-slate prose-lg md:prose-xl max-w-none dark:prose-invert leading-relaxed prose-p:text-justify prose-li:text-justify prose-img:rounded-xl prose-a:text-[rgb(var(--edu-accent))]" dangerouslySetInnerHTML={{ __html: toHtml(data.content) }} />
 										</div>
 									) : (
 										<p className="text-slate-500 dark:text-slate-400">Aucun contenu détaillé.</p>
 									)}
 									{data.procedure ? (
-										<div id="procedure" className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
-											<div className="prose prose-slate dark:prose-invert prose-img:rounded-xl prose-a:text-[rgb(var(--edu-accent))]">
+											<div id="procedure" className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+												<div className="prose prose-slate prose-lg md:prose-xl max-w-none dark:prose-invert leading-relaxed prose-p:text-justify prose-li:text-justify prose-img:rounded-xl prose-a:text-[rgb(var(--edu-accent))]">
 												<h2 className="scroll-mt-24">Procédure</h2>
 												<div dangerouslySetInnerHTML={{ __html: toHtml(data.procedure) }} />
 											</div>
@@ -114,7 +120,6 @@ export default function InfoDetail() {
 												{data.deadline ? <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300"><CalendarClock className="h-4 w-4" /> Deadline: <span className="ml-1 font-medium">{new Date(data.deadline).toLocaleDateString()}</span></div> : null}
 											</div>
 											<div className="mt-4 flex flex-col gap-2">
-												{data.link_url ? <a href={data.link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition"><ExternalLink className="h-4 w-4" /> Accéder au site</a> : null}
 												<Link href="/infos" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-slate-300 bg-white/70 backdrop-blur hover:bg-white text-slate-700 transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">Retour aux infos</Link>
 											</div>
 										</div>

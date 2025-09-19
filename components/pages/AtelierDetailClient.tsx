@@ -1,7 +1,8 @@
 "use client";
+import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { DEFAULT_LANG, Lang, useAutoI18n } from "@/front/lib/i18n";
-import { CalendarDays, MapPin, Share2 } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -10,19 +11,106 @@ export interface AtelierItem {
   title: string;
   desc: string;
   meta: string;
-  content?: string;
-  location?: string;
-  startDate?: string | null;
   image?: string;
   images?: readonly string[];
   video?: string;
+  location?: string;
+  startDate?: string | null;
+  content?: string;
 }
 
 export function AtelierDetailClient({ item }: { item: AtelierItem }) {
   const [lang, setLang] = useState<Lang>(DEFAULT_LANG);
-  const t = useAutoI18n(lang, [item.title, item.desc, item.meta, item.location || "", COPY.ateliersCtaInscrire, "Voir plus d’images", "Agrandir l’image", "Fermer", "Précédent", "Suivant", "Image", "Retour aux ateliers"]);
+  const t = useAutoI18n(lang, [item.title, item.desc, item.meta, item.content || "", COPY.ateliersCtaInscrire]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const DEFAULT_IMG = 'https://res.cloudinary.com/djhpmgfha/image/upload/v1757529651/WhatsApp_Image_2025-09-10_at_19.29.04_vxld0c.jpg';
+
+  const firstImage = (item.images && item.images[0]) || item.image || DEFAULT_IMG;
+  const safe = (s?: string) => (s && s.trim().length ? s : DEFAULT_IMG);
+  const displayDate = item.startDate ? (() => { try { return new Date(item.startDate!).toLocaleDateString(); } catch { return item.startDate as string; } })() : null;
+
+  function renderContent(raw?: string) {
+    const text = (raw && raw.trim().length ? raw : (item.desc || "")) || "";
+    if (!text) return null;
+    const lines = text.split(/\r?\n/);
+    const blocks: JSX.Element[] = [];
+    let currentUL: string[] = [];
+    let currentOL: string[] = [];
+    const flushLists = () => {
+      if (currentUL.length) {
+        blocks.push(
+          <ul key={`ul-${blocks.length}`} className="list-disc pl-5">
+            {currentUL.map((li, i) => (<li key={i}>{li}</li>))}
+          </ul>
+        );
+        currentUL = [];
+      }
+      if (currentOL.length) {
+        blocks.push(
+          <ol key={`ol-${blocks.length}`} className="list-decimal pl-5">
+            {currentOL.map((li, i) => (<li key={i}>{li}</li>))}
+          </ol>
+        );
+        currentOL = [];
+      }
+    };
+    for (const line of lines) {
+      const l = line.trim();
+      if (!l) { flushLists(); continue; }
+      // Recognize simple section headings (FR) like Objectifs, Déroulement, Bénéfices, etc.
+      const isHeading = /^(objectifs?|déroulement|bénéfices?|programme|public|prérequis|infos? pratiques|matériel|matériels|tarifs?|formateur|formateurs?)\s*:?\s*$/i.test(l);
+      if (isHeading) {
+        flushLists();
+        const h = l.replace(/:\s*$/, "");
+        blocks.push(<h3 key={`h3-${blocks.length}`}>{h}</h3>);
+        continue;
+      }
+      const ul = l.match(/^[-*]\s+(.*)$/);
+      if (ul) { currentUL.push(ul[1]); continue; }
+      const ol = l.match(/^\d+\.\s+(.*)$/);
+      if (ol) { currentOL.push(ol[1]); continue; }
+      flushLists();
+      blocks.push(<p key={`p-${blocks.length}`}>{l}</p>);
+    }
+    flushLists();
+    return (
+      <div className="prose prose-slate prose-lg md:prose-xl max-w-none dark:prose-invert leading-relaxed prose-p:text-justify prose-p:text-[1.2rem] md:prose-p:text-[1.3rem] lg:prose-p:text-[1.4rem] prose-p:leading-8 md:prose-p:leading-9 prose-li:text-justify prose-li:text-[1.2rem] md:prose-li:text-[1.3rem] lg:prose-li:text-[1.4rem] prose-li:my-2 prose-li:leading-8 md:prose-li:leading-9 prose-li:marker:text-slate-400 prose-strong:text-slate-900 dark:prose-strong:text-white prose-a:text-edu-primary hover:prose-a:opacity-90 prose-h3:mt-6 md:prose-h3:mt-8 prose-h3:mb-3 md:prose-h3:mb-4 prose-h3:text-[1.25rem] md:prose-h3:text-[1.5rem] lg:prose-h3:text-[1.625rem] prose-h3:font-semibold">
+        {blocks}
+      </div>
+    );
+  }
+
+  function isYouTube(url: string) {
+    try { const u = new URL(url); return /(^|\.)youtube\.com$/.test(u.hostname) || u.hostname === 'youtu.be'; } catch { return false; }
+  }
+  function isVimeo(url: string) {
+    try { const u = new URL(url); return /(^|\.)vimeo\.com$/.test(u.hostname); } catch { return false; }
+  }
+  function toYouTubeEmbed(url: string) {
+    try {
+      const u = new URL(url);
+      if (u.hostname === 'youtu.be') {
+        const id = u.pathname.slice(1);
+        return `https://www.youtube.com/embed/${id}`;
+      }
+      if (/youtube\.com$/.test(u.hostname)) {
+        const id = u.searchParams.get('v');
+        if (id) return `https://www.youtube.com/embed/${id}`;
+        // support /embed/ already
+        if (u.pathname.startsWith('/embed/')) return url;
+      }
+    } catch {}
+    return url;
+  }
+  function toVimeoEmbed(url: string) {
+    try {
+      const u = new URL(url);
+      const match = u.pathname.match(/\/([0-9]+)/);
+      if (match) return `https://player.vimeo.com/video/${match[1]}`;
+    } catch {}
+    return url;
+  }
   useEffect(() => {
     try {
       const stored = localStorage.getItem("tps:lang") as Lang | null;
@@ -44,107 +132,103 @@ export function AtelierDetailClient({ item }: { item: AtelierItem }) {
   }, [lightboxIndex, item.images]);
 
   return (
-    <div>
-      {/* Bold hero with image focus */}
-      <section className="relative">
-        <div className="relative h-[280px] sm:h-[360px] w-full">
-          {item.image ? (
-            <Image src={item.image} alt={t(item.title)} fill sizes="100vw" priority className="object-cover" />
-          ) : (
-            <div className="h-full w-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
-        </div>
-        <div className="absolute inset-0 flex items-end">
-          <div className="mx-auto max-w-screen-xl w-full px-4 sm:px-6 lg:px-8 pb-6">
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">{t(item.title)}</h1>
-            {item.desc ? <p className="mt-2 max-w-3xl text-white/90 drop-shadow">{t(item.desc)}</p> : null}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <a href="#inscription" className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition">{t(COPY.ateliersCtaInscrire)}</a>
-              <button onClick={() => navigator.share?.({ title: t(item.title), url: typeof window !== 'undefined' ? window.location.href : '' }).catch(()=>{})} className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-white/30 bg-white/10 backdrop-blur text-white hover:bg-white/20 transition"><Share2 className="h-4 w-4" /> Partager</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Metadata strip */}
-      <div className="bg-white/80 dark:bg-slate-900/60 backdrop-blur border-y border-slate-200 dark:border-white/10">
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-700 dark:text-slate-300">
-            {item.location ? (<span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" /> {t(item.location)}</span>) : null}
-            {item.startDate ? (<span className="inline-flex items-center gap-1"><CalendarDays className="h-4 w-4" /> {new Date(item.startDate).toLocaleDateString()}</span>) : null}
-          </div>
-        </div>
+    <div className="pb-20 md:pb-28">
+      {/* Title block matching Ateliers */}
+  <div className="mt-6 md:mt-10 max-w-7xl mx-auto px-4 md:px-6">
+        <SectionTitle title={t(item.title)} subtitle={t(item.meta)} />
       </div>
-
-      {/* Optional hero video */}
-      {item.video ? (
-        <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 mt-6">
-          <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-black dark:border-white/10">
-            <video src={item.video} controls playsInline className="w-full h-auto" poster={item.image} />
+      {/* Two-column header: media left, text right */}
+  <section className="mt-6 md:mt-10 max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-12 gap-7 md:gap-8 lg:gap-10">
+        <div className="md:col-span-7 lg:col-span-8">
+          {item.video ? (
+            isYouTube(item.video) ? (
+              <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10" style={{ aspectRatio: '16 / 9' }}>
+                <iframe
+                  src={toYouTubeEmbed(item.video)}
+                  className="absolute inset-0 h-full w-full"
+                  title={t(item.title)}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+            ) : isVimeo(item.video) ? (
+              <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10" style={{ aspectRatio: '16 / 9' }}>
+                <iframe
+                  src={toVimeoEmbed(item.video)}
+                  className="absolute inset-0 h-full w-full"
+                  title={t(item.title)}
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-black" style={{ aspectRatio: '16 / 9' }}>
+                <video
+                  className="absolute inset-0 h-full w-full"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={firstImage}
+                >
+                  <source src={item.video} />
+                </video>
+              </div>
+            )
+          ) : (
+            <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/60 dark:bg-slate-800" style={{ aspectRatio: '16 / 9' }}>
+              <Image src={safe(firstImage)} alt={t(item.title)} fill className="object-cover" />
+            </div>
+          )}
+        </div>
+  <aside className="md:col-span-5 lg:col-span-4">
+          <div className="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-sm p-5 md:p-6">
+          {(displayDate || item.location) ? (
+            <div className="flex flex-wrap items-center gap-2">
+              {displayDate ? (
+                <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-white/10 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-200">
+                  <CalendarDays className="h-4 w-4" />
+                  <span>{displayDate}</span>
+                </div>
+              ) : null}
+              {item.location ? (
+                <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-white/10 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-200">
+                  <MapPin className="h-4 w-4" />
+                  <span>{item.location}</span>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+            {item.desc ? (
+              <p className="mt-4 text-slate-800 dark:text-slate-100 text-base md:text-[1.0625rem] leading-8 text-justify">{t(item.desc)}</p>
+            ) : null}
+          </div>
+        </aside>
+      </section>
+      {/* Full content below the media */}
+      {item.content && item.content.trim().length ? (
+        <section id="content" className="text-xl mt-10 md:mt-12 border-t border-slate-200 dark:border-white/10 pt-8 md:pt-10 max-w-7xl mx-auto px-4 md:px-6">
+          {renderContent(item.content)}
+        </section>
+      ) : null}
+        {item.images?.length ? (
+  <section id="media" className="mt-12 border-t border-slate-200 dark:border-white/10 pt-8 max-w-7xl mx-auto px-4 md:px-6">
+          <h3 className="text-xl font-semibold">{t("Voir plus d’images")}</h3>
+    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {item.images.map((src, idx) => (
+        <button
+                key={src}
+                onClick={() => setLightboxIndex(idx)}
+                className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-slate-300 bg-white/10 dark:bg-white/5 dark:border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--edu-primary))]"
+                aria-label={t("Agrandir l’image")}
+              >
+                <Image src={safe(src)} alt={t(item.title)} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition" />
+              </button>
+            ))}
           </div>
         </section>
       ) : null}
-
-      {/* Content + Sidebar */}
-      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-8 min-w-0 space-y-6">
-            {item.content ? (
-              <div className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
-                <div className="prose prose-slate dark:prose-invert prose-img:rounded-xl prose-a:text-[rgb(var(--edu-accent))]" dangerouslySetInnerHTML={{ __html: toHtml(t(item.content)) }} />
-              </div>
-            ) : null}
-            {/* Horizontal gallery strip */}
-            {item.images?.length || item.video ? (
-              <section id="media" className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
-                <h3 className="text-xl font-semibold">Voir plus d’images</h3>
-                <div className="mt-4 overflow-x-auto no-scrollbar">
-                  <div className="flex gap-4 snap-x snap-mandatory min-w-max pr-2">
-                    {item.video ? (
-                      <button
-                        onClick={() => setLightboxIndex(0)}
-                        className="group relative h-40 w-72 flex-shrink-0 overflow-hidden rounded-xl border border-slate-300 bg-white/10 dark:bg-white/5 dark:border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--edu-primary))] snap-start"
-                        aria-label="Lire la vidéo"
-                      >
-                        <video src={item.video} className="h-full w-full object-cover" muted playsInline />
-                        <span className="pointer-events-none absolute inset-0 bg-black/20 grid place-items-center text-white text-sm">Vidéo</span>
-                      </button>
-                    ) : null}
-                    {(item.images || []).map((src, idx) => (
-                      <button
-                        key={src}
-                        onClick={() => setLightboxIndex(item.video ? idx + 1 : idx)}
-                        className="group relative h-40 w-72 flex-shrink-0 overflow-hidden rounded-xl border border-slate-300 bg-white/10 dark:bg-white/5 dark:border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--edu-primary))] snap-start"
-                        aria-label="Agrandir l’image"
-                      >
-                        <Image src={src} alt={t(item.title)} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
-                        <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            ) : null}
-          </div>
-          <aside className="lg:col-span-4">
-            <div className="lg:sticky lg:top-24 space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-white/90 backdrop-blur p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
-                <div className="text-xs uppercase tracking-wide text-slate-500">{t("Informations")}</div>
-                <div className="mt-3 grid grid-cols-1 gap-3 text-sm">
-                  {item.location ? <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300"><MapPin className="h-4 w-4" /> {t(item.location)}</div> : null}
-                  {item.startDate ? <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300"><CalendarDays className="h-4 w-4" /> {new Date(item.startDate).toLocaleDateString()}</div> : null}
-                </div>
-                <div className="mt-4 flex flex-col gap-2">
-                  <a href="/ateliers" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-slate-300 bg-white/80 backdrop-blur hover:bg-white text-slate-700 transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">{t("Retour aux ateliers")}</a>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-      {/* Removed duplicate bottom grid gallery to favor strip above */}
 
       {/* Lightbox modal */}
       {lightboxIndex !== null && typeof window !== 'undefined' && createPortal(
@@ -177,69 +261,43 @@ export function AtelierDetailClient({ item }: { item: AtelierItem }) {
           </div>
           <div className="h-full w-full flex flex-col" onClick={(e) => e.stopPropagation()}>
             <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
-              <div className="relative w-full max-w-5xl h-[60vh] sm:h-[72vh]">
-                {item.video && lightboxIndex === 0 ? (
-                  <video src={item.video} controls playsInline className="h-full w-full object-contain" />
-                ) : item.images && item.images.length > 0 ? (
-                  <Image src={item.images[item.video ? lightboxIndex! - 1 : lightboxIndex!]} alt={t(item.title)} fill className="object-contain" />
+              <div className="relative w-full max-w-7xl h-[60vh] sm:h-[72vh]">
+                {item.images && item.images.length > 0 ? (
+                  <Image src={safe(item.images[lightboxIndex!]!)} alt={t(item.title)} fill className="object-contain" />
                 ) : null}
               </div>
             </div>
             <div className="px-4 sm:px-6">
-              {(item.images && item.images.length > 1) || item.video ? (
+              {item.images && item.images.length > 1 ? (
                 <div className="mb-3 overflow-x-auto no-scrollbar">
                   <div className="flex gap-2 min-w-max">
-                    {item.video ? (
+                    {item.images.map((src, i) => (
                       <button
-                        onClick={() => setLightboxIndex(0)}
-                        className={`relative h-14 w-20 rounded-lg overflow-hidden border ${lightboxIndex === 0 ? 'border-white' : 'border-white/30'} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70`}
-                        aria-label="Aller à la vidéo"
+                        key={src}
+                        onClick={() => setLightboxIndex(i)}
+                        className={`relative h-14 w-20 rounded-lg overflow-hidden border ${i === lightboxIndex ? 'border-white' : 'border-white/30'} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70`}
+                        aria-label={t("Aller à l’image") + ' ' + (i + 1)}
                       >
-                        <video src={item.video} className="h-full w-full object-cover" muted playsInline />
+                        <Image src={safe(src)} alt={t(item.title)} fill className="object-cover" />
                       </button>
-                    ) : null}
-                    {(item.images || []).map((src, i) => {
-                      const idx = item.video ? i + 1 : i;
-                      return (
-                        <button
-                          key={src}
-                          onClick={() => setLightboxIndex(idx)}
-                          className={`relative h-14 w-20 rounded-lg overflow-hidden border ${idx === lightboxIndex ? 'border-white' : 'border-white/30'} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70`}
-                          aria-label={t("Aller à l’image") + ' ' + (i + 1)}
-                        >
-                          <Image src={src} alt={t(item.title)} fill className="object-cover" />
-                        </button>
-                      );
-                    })}
+                    ))}
                   </div>
                 </div>
               ) : null}
             </div>
             <div className="pb-[max(1rem,env(safe-area-inset-bottom))] px-4 sm:px-6 flex items-center justify-between">
               <div className="text-sm text-white/80">
-                {item.video ? (
-                  lightboxIndex === 0 ? 'Vidéo' : `Image ${lightboxIndex!} / ${(item.images?.length || 0)}`
-                ) : (
-                  `Image ${lightboxIndex! + 1} / ${(item.images?.length || 0)}`
-                )}
+                {t("Image")} {lightboxIndex! + 1} / {item.images?.length ?? 0}
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setLightboxIndex((i) => {
-                    if (i === null) return i;
-                    const total = (item.images?.length || 0) + (item.video ? 1 : 0);
-                    return (i - 1 + total) % total;
-                  })}
+                  onClick={() => setLightboxIndex((i) => (i === null || !item.images ? null : (i - 1 + item.images.length) % item.images.length))}
                   className="rounded-xl border border-white/40 bg-white/10 px-4 py-2 hover:bg-white/20"
                 >
                   {t("Précédent")}
                 </button>
                 <button
-                  onClick={() => setLightboxIndex((i) => {
-                    if (i === null) return i;
-                    const total = (item.images?.length || 0) + (item.video ? 1 : 0);
-                    return (i + 1) % total;
-                  })}
+                  onClick={() => setLightboxIndex((i) => (i === null || !item.images ? null : (i + 1) % item.images.length))}
                   className="rounded-xl border border-white/40 bg-white/10 px-4 py-2 hover:bg-white/20"
                 >
                   {t("Suivant")}
@@ -251,11 +309,4 @@ export function AtelierDetailClient({ item }: { item: AtelierItem }) {
       )}
     </div>
   );
-}
-
-function toHtml(text: string) {
-  const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const safe = esc(text);
-  const linked = safe.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1<\/a>');
-  return linked.replace(/\n/g, "<br/>");
 }

@@ -10,6 +10,8 @@ import { useSharedLang } from "@/front/lib/useLang";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
+const DEFAULT_IMG = 'https://res.cloudinary.com/djhpmgfha/image/upload/v1757529651/WhatsApp_Image_2025-09-10_at_19.29.04_vxld0c.jpg';
+
 const TABS = [
 	{ key: "", label: "Tout" },
 	{ key: "concours", label: "Concours" },
@@ -44,13 +46,24 @@ function InfosIndexInner() {
 							<div className="mt-8">
 								{promoted.slice(0,1).map(p => (
 									<article key={p.slug} className="rounded-2xl border border-amber-300 bg-amber-100/40 dark:bg-amber-200/10 dark:border-amber-200/30 overflow-hidden shadow-sm">
-										<div className="p-5">
-											<div className="text-xs uppercase tracking-wide text-amber-700">Info à la une</div>
-											<h3 className="font-semibold text-xl mt-1">{p.title}</h3>
-											{p.excerpt ? <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">{p.excerpt}</p> : null}
-											<div className="mt-3 flex gap-2">
-												<a href={`/infos/${p.slug}`} className="px-3 py-1.5 rounded-lg bg-[rgb(var(--edu-primary))] text-slate-900 text-sm font-semibold">Voir le détail</a>
+										<div className="grid md:grid-cols-2">
+											<div className="relative overflow-hidden min-h-[220px] md:min-h-[320px] bg-slate-100/60 dark:bg-slate-800">
+												{/* eslint-disable-next-line @next/next/no-img-element */}
+												<img
+													src={p.cover_image || DEFAULT_IMG}
+													alt={p.title}
+													className="absolute inset-0 w-full h-full object-cover"
+													onError={(e)=>{ const d = DEFAULT_IMG; if ((e.currentTarget as HTMLImageElement).src !== d) { (e.currentTarget as HTMLImageElement).src = d; } }}
+												/>
+											</div>
+											<div className="p-5 md:p-6 flex flex-col justify-center">
+												<div className="text-xs uppercase tracking-wide text-amber-700">Info à la une</div>
+												<h3 className="font-semibold text-xl md:text-2xl mt-1 leading-tight">{p.title}</h3>
+												{p.excerpt ? <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">{p.excerpt}</p> : null}
+												<div className="mt-3 flex gap-2 items-center">
+													<a href={`/infos/${p.slug}`} className="px-3 py-1.5 rounded-lg bg-[rgb(var(--edu-primary))] text-slate-900 text-sm font-semibold">Voir le détail</a>
 													{p.procedure ? <a href={`/infos/${p.slug}#procedure`} className="px-3 py-1.5 rounded-lg border border-amber-300 bg-white/20 text-sm dark:bg-white/10 dark:border-amber-200/30 text-amber-800">Voir la procédure</a> : null}
+												</div>
 											</div>
 										</div>
 									</article>
@@ -72,10 +85,10 @@ function InfosIndexInner() {
 									role="button"
 									aria-label={`Voir le détail: ${info.title}`}
 								>
-									{info.cover_image ? (
-										// eslint-disable-next-line @next/next/no-img-element
-										<img src={info.cover_image} alt={info.title} className="w-full aspect-[3/2] object-cover" onError={(e)=>{ (e.currentTarget as HTMLImageElement).style.display='none'; }} />
-									) : null}
+									<div className="relative w-full aspect-[3/2] overflow-hidden min-h-[200px] md:min-h-[260px] bg-slate-100/60 dark:bg-slate-800">
+										{/* eslint-disable-next-line @next/next/no-img-element */}
+										<img src={info.cover_image || DEFAULT_IMG} alt={info.title} className="absolute inset-0 w-full h-full object-cover" onError={(e)=>{ const d = DEFAULT_IMG; if ((e.currentTarget as HTMLImageElement).src !== d) { (e.currentTarget as HTMLImageElement).src = d; } }} />
+									</div>
 									<div className="p-5">
 										<div className="text-xs uppercase tracking-wide text-slate-500">{info.info_type}</div>
 										<h3 className="font-semibold text-lg mt-1">{info.title}</h3>

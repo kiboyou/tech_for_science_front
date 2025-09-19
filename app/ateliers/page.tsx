@@ -2,13 +2,22 @@
 import { ClientFooter } from "@/front/components/sections/ClientFooter";
 import { ClientHeader } from "@/front/components/sections/ClientHeader";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
-import { TiltCard } from "@/front/components/ui/TiltCard";
 import { api, AtelierDTO } from "@/front/lib/api";
 import { COPY } from "@/front/lib/copy";
 import { useAutoI18n } from "@/front/lib/i18n";
 import { useAteliers } from "@/front/lib/useApi";
 import { useSharedLang } from "@/front/lib/useLang";
-import { useEffect, useState } from "react";
+import { CalendarDays } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
+const THEME_DEFS: { key: string; label: string; keywords: string[] }[] = [
+  { key: 'ia', label: 'IA', keywords: ['ia', 'intelligence artificielle', 'ai'] },
+  { key: 'robotique', label: 'Robotique', keywords: ['robot', 'robotique'] },
+  { key: 'vr3d', label: 'VR/3D', keywords: ['vr', '3d', 'réalité virtuelle', 'realite virtuelle', 'immersive'] },
+  { key: 'stem', label: 'STEM', keywords: ['stem', 'science', 'tech', 'technologie', 'math', 'ingénierie', 'ingenierie'] },
+];
+
+const DEFAULT_IMG = 'https://res.cloudinary.com/djhpmgfha/image/upload/v1757529651/WhatsApp_Image_2025-09-10_at_19.29.04_vxld0c.jpg';
 
 export default function AteliersIndex() {
   const [lang] = useSharedLang();
@@ -24,54 +33,120 @@ export default function AteliersIndex() {
   const [promoted, setPromoted] = useState<AtelierDTO[] | null>(null);
   useEffect(() => { api.getAteliersPromoted().then(setPromoted).catch(()=>setPromoted([])); }, []);
   const { data: ateliers } = useAteliers();
+  const [themes, setThemes] = useState<string[]>([]);
+  const [upcomingOnly, setUpcomingOnly] = useState(false);
+
+  
+
+  const filteredAteliers = useMemo(() => {
+    const base = (ateliers || []).slice();
+    const now = new Date();
+    return base
+      .filter(a => {
+        if (!themes.length) return true;
+        const hay = `${a.title || ''} ${a.summary || ''} ${a.content || ''}`.toLowerCase();
+        return themes.some(key => {
+          const def = THEME_DEFS.find(d => d.key === key);
+          return def ? def.keywords.some(k => hay.includes(k)) : false;
+        });
+      })
+      .filter(a => {
+        if (!upcomingOnly) return true;
+        if (!a.start_date) return false;
+        const d = new Date(a.start_date);
+        return d >= now;
+      });
+  }, [ateliers, themes, upcomingOnly]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <ClientHeader />
       <main className="flex-1 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
         <SectionTitle title={t(COPY.ateliersTitle)} />
+        {/* Filtres au style des onglets Infos */}
+        <section className="mt-6">
+          <div className="flex flex-wrap justify-center gap-2">
+            <button
+              onClick={() => setThemes([])}
+              className={`px-4 py-2 rounded-xl border text-sm ${themes.length===0 ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
+            >Tous</button>
+            {THEME_DEFS.map(def => (
+              <button
+                key={def.key}
+                onClick={() => setThemes(prev => prev.includes(def.key) ? prev.filter(k=>k!==def.key) : [...prev, def.key])}
+                className={`px-4 py-2 rounded-xl border text-sm ${themes.includes(def.key) ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
+              >{def.label}</button>
+            ))}
+            <button
+              onClick={() => setUpcomingOnly(v=>!v)}
+              className={`px-4 py-2 rounded-xl border text-sm ${upcomingOnly ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
+            >À venir seulement</button>
+          </div>
+        </section>
         {promoted && promoted.length ? (
-          <div className="mt-6">
-            {promoted.slice(0,1).map(p => (
+          <div className="mt-8">
+            {promoted.slice(0, 1).map((p) => (
               <article key={p.slug} className="rounded-2xl border border-amber-300 bg-amber-100/40 dark:bg-amber-200/10 dark:border-amber-200/30 overflow-hidden shadow-sm">
-                <div className="grid md:grid-cols-2 gap-0">
-                  {p.cover_image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.cover_image} alt={p.title} className="w-full h-full object-cover" onError={(e)=>{ (e.currentTarget as HTMLImageElement).style.display='none'; }} />
-                  ) : null}
-                  <div className="p-6">
-                    <div className="text-xs uppercase tracking-wide text-amber-700">Atelier à venir</div>
-                    <h3 className="font-semibold text-2xl mt-1">{p.title}</h3>
-                    {p.summary ? <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">{p.summary}</p> : null}
-                    <div className="mt-3 flex gap-2">
-                      <a href="#inscription" className="px-4 py-2 rounded-xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold">{t(COPY.ateliersCtaInscrire)}</a>
-                      <a href={`/ateliers/${p.slug}`} className="px-4 py-2 rounded-xl border border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10">{t(COPY.ateliersCtaDetails)}</a>
+                <div className="grid md:grid-cols-2">
+                  <div className="relative overflow-hidden min-h-[220px] md:min-h-[320px] bg-slate-100/60 dark:bg-slate-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={p.cover_image || DEFAULT_IMG}
+                      alt={p.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={(e)=>{ const d = DEFAULT_IMG; if ((e.currentTarget as HTMLImageElement).src !== d) { (e.currentTarget as HTMLImageElement).src = d; } }}
+                    />
                   </div>
+                  <div className="p-5 md:p-6 flex flex-col justify-center">
+                    <div className="text-xs uppercase tracking-wide text-amber-700">Atelier à la une</div>
+                    <h3 className="font-semibold text-xl md:text-2xl mt-1 leading-tight">{p.title}</h3>
+                    {p.summary ? <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">{p.summary}</p> : null}
+                    <div className="mt-3 flex gap-2 items-center">
+                      <a href={`/ateliers/${p.slug}`} className="px-3 py-1.5 rounded-lg bg-[rgb(var(--edu-primary))] text-slate-900 text-sm font-semibold">{t(COPY.ateliersCtaDetails)}</a>
+                      {p.start_date ? (
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-amber-300 bg-white/20 text-sm dark:bg-white/10 dark:border-amber-200/30 text-amber-800">
+                          <CalendarDays className="h-4 w-4" />
+                          <span>{new Date(p.start_date).toLocaleDateString()}</span>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </article>
             ))}
           </div>
         ) : null}
-        {/* Removed redundant descriptive listing sentence per request */}
+        
         {!(ateliers || []).length ? (
           <p className="mt-10 text-center text-slate-500">Aucun atelier disponible.</p>
         ) : (
         <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {(ateliers || []).map((a, i) => (
-            <div key={a.title} className={`anim-fade-up ${i===0?'':'anim-delay-'+((i%5)+1)}`}>
-      <TiltCard className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5 transition-transform will-change-transform">
-                <article className="p-6">
-                  <div className="text-sm text-slate-400">{a.start_date ? new Date(a.start_date).toLocaleString() : ""}</div>
-                  <h3 className="mt-3 font-semibold text-lg">{a.title}</h3>
-                  <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{a.summary || ""}</p>
-                  <div className="mt-4 flex gap-2">
-                    <a href="#inscription" className="px-4 py-2 rounded-xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition">{t(COPY.ateliersCtaInscrire)}</a>
-        <a href={`/ateliers/${a.slug}`} className="px-4 py-2 rounded-xl border border-slate-300 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-slate-700 shadow-sm transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">{t(COPY.ateliersCtaDetails)}</a>
-                  </div>
-                </article>
-              </TiltCard>
-            </div>
+          {filteredAteliers.map((a, i) => (
+            <article
+              key={a.slug || a.title || i}
+              className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5 overflow-hidden"
+            >
+              <div className="relative w-full aspect-[3/2] overflow-hidden min-h-[200px] md:min-h-[260px] bg-slate-100/60 dark:bg-slate-800">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={((a.cover_image || a.images?.[0]?.image_url) as string) || DEFAULT_IMG}
+                  alt={a.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e)=>{ const d = DEFAULT_IMG; if ((e.currentTarget as HTMLImageElement).src !== d) { (e.currentTarget as HTMLImageElement).src = d; } }}
+                />
+              </div>
+              <div className="p-5">
+                <div className="text-xs uppercase tracking-wide text-slate-500 inline-flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4" />
+                  <span>{a.start_date ? new Date(a.start_date).toLocaleDateString() : "Date à venir"}</span>
+                </div>
+                <h3 className="font-semibold text-lg mt-1">{a.title}</h3>
+                {a.summary ? <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">{a.summary}</p> : null}
+                <div className="mt-3 flex gap-2">
+                  <a href={`/ateliers/${a.slug}`} className="px-3 py-1.5 rounded-lg bg-[rgb(var(--edu-primary))] text-slate-900 text-sm font-semibold">{t(COPY.ateliersCtaDetails)}</a>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
         )}
