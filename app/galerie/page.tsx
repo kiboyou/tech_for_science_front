@@ -21,6 +21,9 @@ export default function GalerieIndex() {
       <ClientHeader />
       <main className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
       <SectionTitle title={t("Galerie")} />
+      <div className="mt-2 flex justify-center sm:justify-end">
+        <a href="/#galerie" className="btn-pill btn-ghost">Retour à la section</a>
+      </div>
       <div className="mt-6 grid gap-5 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {GALLERY_ITEMS.map((g) => (
           <a key={g.id} href={`/galerie/${g.id}`} className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white aspect-video group dark:border-white/10 dark:bg-white/5">

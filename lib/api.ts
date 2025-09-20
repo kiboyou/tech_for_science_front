@@ -41,6 +41,7 @@ export type AtelierDTO = {
   video_url?: string | null;
   location?: string;
   start_date?: string | null;
+  end_date?: string | null;
   images?: { id: number; image_url: string; caption?: string; order?: number }[];
 };
 

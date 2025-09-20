@@ -40,11 +40,8 @@ export function Infos({ t }: { t: (s: string) => string }) {
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
         <SectionTitle title={t(title)} subtitle={t(subtitle)} />
         <div className="mt-2 flex justify-center sm:justify-end">
-          <a
-            href="/infos"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white/80 backdrop-blur-sm px-4 py-2 text-sm text-slate-700 hover:bg-white/90 shadow-sm transition dark:border-white/10 dark:bg-white/5 dark:text-white"
-          >
-            {t("Voir tout")} <ArrowRight className="h-4 w-4" />
+          <a href="/infos" className="btn-pill btn-ghost">
+            {t("Voir tout")} <ArrowRight className="btn-icon" />
           </a>
         </div>
 
@@ -54,7 +51,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
           <>
             {featured ? (
               <article
-                className="mt-8 rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm overflow-hidden shadow-sm dark:border-white/10 dark:bg-white/5"
+                className="mt-8 rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm overflow-hidden dark:border-white/10 dark:bg-white/5"
               >
                 <div className="grid md:grid-cols-12">
                   <div className="md:col-span-5 lg:col-span-6">
@@ -71,7 +68,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
                       <p className="mt-3 text-slate-700 dark:text-slate-300 text-justify">{t(featured.excerpt)}</p>
                     ) : null}
                     <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                      <span className="rounded-full border border-slate-300/80 px-2 py-0.5 text-slate-600 dark:border-white/10 dark:text-slate-300">
+                      <span className="rounded-full border border-slate-200/60 px-2 py-0.5 text-slate-600 dark:border-white/10 dark:text-slate-300">
                         {t(featured.type)}
                       </span>
                       {featured.deadline ? (
@@ -92,7 +89,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
                           href={featured.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded-xl border border-slate-300 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 shadow-sm transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
+                          className="px-4 py-2 rounded-xl border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
                         >
                           {t("Lien")} ↗
                         </a>
@@ -107,7 +104,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
             {rest.slice(0, 3).map((info, i) => (
               <Reveal key={info.slug || info.title} delay={i * 0.08} effect={i % 3 === 0 ? "slideLeft" : i % 3 === 1 ? "zoomIn" : "slideRight"}>
                 <article
-                  className="group rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm overflow-hidden shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-white/5 cursor-pointer"
+                  className="group rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm overflow-hidden transition dark:border-white/10 dark:bg-white/5 cursor-pointer"
                   onClick={() => { if (info.slug) window.location.href = `/infos/${info.slug}`; }}
                   role="button"
                   aria-label={t(`Voir plus sur ${info.title}`)}
@@ -116,7 +113,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
                     <div className="relative aspect-[16/9] w-full">
                       <Image src={info.cover} alt={t(info.title)} fill className="object-cover" />
                       {info.promoted ? (
-                        <div className="absolute left-3 top-3 rounded-full bg-[rgb(var(--edu-primary))] text-slate-900 px-2 py-1 text-xs font-semibold shadow-sm">
+                        <div className="absolute left-3 top-3 rounded-full bg-[rgb(var(--edu-primary))] text-slate-900 px-2 py-1 text-xs font-semibold">
                           {t("Mis en avant")}
                         </div>
                       ) : null}
@@ -124,7 +121,7 @@ export function Infos({ t }: { t: (s: string) => string }) {
                   ) : null}
                   <div className="p-5">
                     <div className="flex items-center gap-2 text-xs">
-                      <span className="rounded-full border border-slate-300/80 px-2 py-0.5 text-slate-600 dark:border-white/10 dark:text-slate-300">
+                      <span className="rounded-full border border-slate-200/60 px-2 py-0.5 text-slate-600 dark:border-white/10 dark:text-slate-300">
                         {t(info.type)}
                       </span>
                       {info.deadline ? (
@@ -149,14 +146,14 @@ export function Infos({ t }: { t: (s: string) => string }) {
                           href={info.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 rounded-xl border border-slate-300 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 shadow-sm transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
+                          className="px-4 py-2 rounded-xl border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
                         >
                           {t("Lien")} ↗
                         </a>
                       ) : (
                         <a
                           href={`/infos/${info.slug}`}
-                          className="px-4 py-2 rounded-xl border border-slate-300 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 shadow-sm transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
+                          className="px-4 py-2 rounded-xl border border-slate-200/60 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-slate-700 transition dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white"
                         >
                           {t("Détails")}
                         </a>

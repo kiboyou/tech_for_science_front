@@ -69,7 +69,7 @@ export function Hero({ t, scene, setScene }: { t: (s: string) => string; scene: 
               {[
                 { label: COPY.heroStats[0], value: 2500, suffix: "+", duration: 2.5, href: "#impacts", Icon: Users },
                 { label: COPY.heroStats[1], value: 4, suffix: "+", duration: 2.0, href: "#equipe", Icon: Building2 },
-                { label: COPY.heroStats[2], value: 17, suffix: "%", duration: 2.2, href: "#impacts", Icon: TrendingUp },
+                { label: COPY.heroStats[2], value: 17, suffix: "+", duration: 2.2, href: "#impacts", Icon: TrendingUp },
               ].map((k) => (
                 <a
                   key={k.label as any}

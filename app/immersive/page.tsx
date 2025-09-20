@@ -1,6 +1,6 @@
 "use client";
 import { Ateliers } from "@/front/components/sections/Ateliers";
-import { Blog } from "@/front/components/sections/Blog";
+// import { Blog } from "@/front/components/sections/Blog";
 import { Contact } from "@/front/components/sections/Contact";
 import { Equipe } from "@/front/components/sections/Equipe";
 import { Features } from "@/front/components/sections/Features";
@@ -8,7 +8,7 @@ import { Footer } from "@/front/components/sections/Footer";
 import { Header } from "@/front/components/sections/Header";
 import { Hero } from "@/front/components/sections/Hero";
 import { Impacts } from "@/front/components/sections/Impacts";
-import { Infos } from "@/front/components/sections/Infos";
+// import { Infos } from "@/front/components/sections/Infos";
 import { Mission } from "@/front/components/sections/Mission";
 import { Objectifs } from "@/front/components/sections/Objectifs";
 import { PromotedInfoModal } from "@/front/components/sections/PromotedInfoModal";
@@ -67,11 +67,11 @@ export default function TechPourScienceLandingImmersive() {
       <Hero t={t} scene={scene} setScene={setScene} />
   <Features t={t} />
       <Mission t={t} />
-  <Infos t={t} />
+  {/* <Infos t={t} /> */}
   <Objectifs t={t} />
   <Ateliers t={t} />
   <Impacts t={t} />
-  <Blog t={t} />
+  {/* <Blog t={t} /> */}
   <Equipe t={t} />
   <Rejoindre t={t} />
       <Contact t={t} />

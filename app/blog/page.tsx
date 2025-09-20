@@ -19,6 +19,9 @@ export default function BlogIndex() {
       <ClientHeader />
       <main className="flex-1 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
         <SectionTitle title={t("Blog scientifique")} subtitle={t("Articles et actualités")} />
+        <div className="mt-2 flex justify-center sm:justify-end">
+          <a href="/#blog" className="btn-pill btn-ghost">Retour à la section</a>
+        </div>
         {!data || !data.length ? (
           <p className="mt-10 text-center text-slate-500">Aucun article disponible.</p>
         ) : (

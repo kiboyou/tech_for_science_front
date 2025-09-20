@@ -20,7 +20,7 @@ export function Contact({ t }: { t: (s: string) => string }) {
           ) : (
             <div className="mt-8 grid gap-6 md:grid-cols-5">
               {/* Info card */}
-              <div className="md:col-span-2 rounded-2xl border border-slate-300 bg-white/60 p-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+              <div className="form-card md:col-span-2 rounded-2xl border border-slate-300 bg-white/60 p-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
                 <h3 className="font-semibold text-edu-heading">{t("Coordonnées")}</h3>
                 <p className="mt-2 text-sm text-edu-body">{t("Écrivez-nous pour toute question ou idée. Nous répondons sous 24-48h.")}</p>
                 <div className="mt-4 space-y-3 text-sm">
@@ -31,14 +31,14 @@ export function Contact({ t }: { t: (s: string) => string }) {
                 <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">{t("Vos informations ne sont utilisées que pour vous répondre.")}</p>
               </div>
               {/* Form card */}
-              <form onSubmit={(e)=>{e.preventDefault(); setSent(true); setSuccessOpen(true);}} className="md:col-span-3 grid gap-4 rounded-2xl border border-slate-300 bg-white/60 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+              <form onSubmit={(e)=>{e.preventDefault(); setSent(true); setSuccessOpen(true);}} className="form-card md:col-span-3 grid gap-4 rounded-2xl border border-slate-300 bg-white/60 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <input required className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" placeholder={t("Nom & Prénom")} />
-                  <input required type="email" className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" placeholder={t("Email")} />
+                  <input required className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" placeholder={t("Nom & Prénom")} />
+                  <input required type="email" className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" placeholder={t("Email")} />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <input className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" placeholder={t("Téléphone (optionnel)")} />
-                  <select className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" defaultValue="">
+                  <input className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" placeholder={t("Téléphone (optionnel)")} />
+                  <select className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" defaultValue="">
                     <option value="" disabled>{t("Sujet de la demande")}</option>
                     <option>{t("Question générale")}</option>
                     <option>{t("Partenariat")}</option>
@@ -46,7 +46,7 @@ export function Contact({ t }: { t: (s: string) => string }) {
                     <option>{t("Autre")}</option>
                   </select>
                 </div>
-                <textarea rows={6} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" placeholder={t("Votre message")} />
+                <textarea rows={6} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" placeholder={t("Votre message")} />
                 <div className="flex items-center gap-3">
                   <button type="submit" className="px-5 py-3 rounded-2xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition w-fit">{t("Envoyer")}</button>
                   <span className="text-xs text-slate-500 dark:text-slate-400">{t("Temps de réponse moyen: 24h")}</span>

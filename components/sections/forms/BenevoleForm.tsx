@@ -50,13 +50,13 @@ export function BenevoleForm({ onSuccess }: { onSuccess?: () => void }) {
     >
       <p className="text-sm text-slate-600 dark:text-slate-300">{t("Rejoignez notre équipe et contribuez à la diffusion de la science auprès des jeunes.")}</p>
       {error ? <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">{error}</div> : null}
-      <input required name="nom" placeholder={t("Nom & Prénom")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required type="email" name="email" placeholder={t("Email")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="tel" placeholder={t("Téléphone")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="ville" placeholder={t("Ville / Localisation")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
+  <input required name="nom" placeholder={t("Nom & Prénom")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required type="email" name="email" placeholder={t("Email")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="tel" placeholder={t("Téléphone")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="ville" placeholder={t("Ville / Localisation")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
       <div>
         <label className="block text-sm mb-1">{t("Domaine de compétences")}</label>
-        <select name="domaine" className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" defaultValue="">
+  <select name="domaine" className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" defaultValue="">
           <option value="" disabled>{t("Choisir…")}</option>
           <option value="science">{t("Science")}</option>
           <option value="animation3d">{t("Animation 3D")}</option>
@@ -65,7 +65,7 @@ export function BenevoleForm({ onSuccess }: { onSuccess?: () => void }) {
           <option value="administration">{t("Administration")}</option>
           <option value="autre">{t("Autre")}</option>
         </select>
-        <input placeholder={t("Si 'Autre', précisez")} className="mt-2 bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" value={autre} onChange={e=>setAutre(e.target.value)} />
+  <input placeholder={t("Si 'Autre', précisez")} className="form-control mt-2 bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" value={autre} onChange={e=>setAutre(e.target.value)} />
       </div>
       <fieldset className="grid gap-1">
         <legend className="text-sm">{t("Disponibilités")}</legend>
@@ -73,7 +73,7 @@ export function BenevoleForm({ onSuccess }: { onSuccess?: () => void }) {
         <label className="flex items-center gap-2"><input type="checkbox" name="dispos" value="Week-end"/> {t("Week-end")}</label>
         <label className="flex items-center gap-2"><input type="checkbox" name="dispos" value="Vacances"/> {t("Vacances scolaires")}</label>
       </fieldset>
-  <textarea name="motivation" placeholder={t("Pourquoi souhaitez-vous devenir bénévole ?")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" rows={4} />
+  <textarea name="motivation" placeholder={t("Pourquoi souhaitez-vous devenir bénévole ?")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" rows={4} />
   <button disabled={loading} type="submit" className="mt-1 px-5 py-3 rounded-2xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition w-fit disabled:opacity-60">{t("Devenir bénévole")}</button>
     </form>
   );

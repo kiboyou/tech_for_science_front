@@ -20,10 +20,10 @@ export function Impacts({ t }: { t: (s: string) => string }) {
                 {COPY.impactsItems.map((it, i) => {
                   // Mapping explicite par valeur exacte
                   const iconRegistry: Record<string, { Icon: any; tone: 'red' | 'blue' | 'green'; effect: string }> = {
-                    'Compréhension renforcée': { Icon: Brain, tone: 'blue', effect: 'zoomIn' },
+                    'Compréhension scientifique renforcée': { Icon: Brain, tone: 'blue', effect: 'zoomIn' },
                     'Phénomènes simulés en 3D/VR': { Icon: Cpu, tone: 'green', effect: 'fadeUp' },
                     'Orientation vers filières STEM': { Icon: Compass, tone: 'red', effect: 'slideRight' },
-                    '+ Représentation féminine': { Icon: Users, tone: 'blue', effect: 'fadeUp' },
+                    'Contribuer à l’augmentation du nombre de femme en science': { Icon: Users, tone: 'blue', effect: 'fadeUp' },
                   };
                   const fallback = { Icon: Sparkles, tone: 'blue' as const, effect: 'fadeUp' };
                   const cfg = iconRegistry[it] || fallback;
@@ -57,7 +57,7 @@ export function Impacts({ t }: { t: (s: string) => string }) {
               <div className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-[rgba(241,192,22,0.25)] via-[rgba(241,192,22,0.10)] to-transparent blur-2xl opacity-70 group-hover:opacity-90 transition" />
               <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/70 dark:ring-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md shadow-sm">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(241,192,22,0.18),transparent_70%)] pointer-events-none" />
-                <Image src="https://res.cloudinary.com/djhpmgfha/image/upload/v1757977673/IMG_0547_qwddc6.jpg" alt="impacts" width={1200} height={900} className="w-full h-full object-cover aspect-[4/3]" />
+                <Image src="https://res.cloudinary.com/djhpmgfha/image/upload/v1757529797/WhatsApp_Image_2025-09-10_at_19.28.28_e652le.jpg" alt="impacts" width={1200} height={900} className="w-full h-full object-cover aspect-[4/3]" />
               </div>
             </div>
           </Reveal>

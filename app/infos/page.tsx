@@ -34,6 +34,9 @@ function InfosIndexInner() {
 			<ClientHeader />
 			<main className="flex-1 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
 				<SectionTitle title={t("Toutes les informations")} />
+				<div className="mt-2 flex justify-center sm:justify-end">
+					<a href="/#infos" className="btn-pill btn-ghost">Retour à la section</a>
+				</div>
 				<div className="mt-6 flex flex-wrap justify-center gap-2">
 					{TABS.map((tb) => (
 						<a key={tb.key || "all"} href={tb.key ? `/infos?type=${tb.key}` : "/infos"} className={`px-4 py-2 rounded-xl border text-sm ${tab===tb.key?"bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent":"border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10"}`}>

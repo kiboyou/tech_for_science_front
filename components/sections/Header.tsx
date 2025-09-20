@@ -60,7 +60,6 @@ export function Header({ lang, t, onToggleLang, onSetLang }: { lang: "fr" | "en"
             { label: t(COPY.navHome ?? "Accueil"), href: "/" },
             { label: t(COPY.navAteliers ?? "Ateliers"), href: "/ateliers" },
             { label: t("Infos"), href: "/infos" },
-            { label: t(COPY.navBlog ?? "Blog"), href: "/blog" },
           ].map((item) => (
             <a
               key={item.href}
@@ -165,7 +164,6 @@ export function Header({ lang, t, onToggleLang, onSetLang }: { lang: "fr" | "en"
                 { label: t(COPY.navHome ?? "Accueil"), href: "/" },
                 { label: t(COPY.navAteliers ?? "Ateliers"), href: "/ateliers" },
                 { label: t("Infos"), href: "/infos" },
-                { label: t(COPY.navBlog ?? "Blog"), href: "/blog" },
               ].map((item) => (
                 <a
                   key={item.href}

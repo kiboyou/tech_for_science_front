@@ -11,10 +11,10 @@ export const EN_DICT: Record<string, string> = {
   // Hero
   "La technologie au service de l’": "Technology in service of ",
   "éducation scientifique": "science education",
-  "Ateliers IA, 3D interactive, panels et ressources pour inspirer la prochaine génération de scientifiques en Côte d’Ivoire.": "AI workshops, interactive 3D, panels and resources to inspire the next generation of scientists in Côte d’Ivoire.",
+  "Ateliers scientifique, 3D interactive, panels et ressources pour inspirer la prochaine génération de scientifiques en Côte d’Ivoire.": "Science workshops, interactive 3D, panels and resources to inspire the next generation of scientists in Côte d’Ivoire.",
   "Élèves impactés": "Students impacted",
   "Établissements": "Institutions",
-  "% Filles STEM": "% Girls in STEM",
+  "Filles STEM": "Girls in STEM",
   "3D • Physique • Chimie": "3D • Physics • Chemistry",
   "Science • Technologie • Intelligence artificielle": "Science • Technology • Artificial Intelligence",
   "IA": "AI",
@@ -37,7 +37,11 @@ export const EN_DICT: Record<string, string> = {
   "Leadership & communication": "Leadership & communication",
     // (duplicate) Clubs STEM handled above
   "Initiatives concrètes et mesurables, pilotées avec nos partenaires éducatifs.": "Concrete, measurable initiatives, driven with our education partners.",
-  "Nous créons des expériences qui donnent envie d'apprendre : manipulations, simulations 3D et démonstrations.": "We create experiences that make you want to learn: hands-on activities, 3D simulations and demonstrations.",
+  "Nous concevons des ateliers interactifs et stimulants qui rapprochent les jeunes de la science et les encouragent à expérimenter, explorer et innover": "We design interactive, engaging workshops that bring young people closer to science and encourage them to experiment, explore and innovate",
+  "Nous développons des méthodes d’apprentissage originales et engageantes qui rendent les savoirs plus accessibles, concrets et attrayants": "We develop original, engaging learning methods that make knowledge more accessible, concrete and appealing",
+  "Nous accompagnons les jeunes dans le développement de leurs compétences sociales et relationnelles : confiance en soi, esprit critique, communication et esprit d’équipe.": "We support young people in developing social and interpersonal skills: self-confidence, critical thinking, communication and teamwork.",
+  "Nous animons des clubs où les apprenants explorent les sciences, la technologie, l’ingénierie et les mathématiques à travers des projets collaboratifs et concrets.": "We run clubs where learners explore science, technology, engineering and mathematics through collaborative, hands-on projects.",
+  
   // Objectifs
   "Objectifs": "Objectives",
   "Vulgariser via supports interactifs": "Popularize through interactive media",
@@ -52,6 +56,7 @@ export const EN_DICT: Record<string, string> = {
   "ODD5: Égalité des sexes": "SDG5: Gender equality",
   "ODD9: Innovation & industrie": "SDG9: Innovation & industry",
   "ODD17: Partenariats": "SDG17: Partnerships",
+  "Objectifs de développement durable (ODD)": "Sustainable Development Goals (SDGs)",
   // Ateliers
   "Ateliers & Activités": "Workshops & Activities",
   "Voir tous les ateliers": "See all workshops",
@@ -73,6 +78,10 @@ export const EN_DICT: Record<string, string> = {
   "Galerie": "Gallery",
   "Voir toute la galerie": "See full gallery",
   "Voir plus d’images": "See more images",
+  "Biographie": "Biography",
+  "Fondatrice & Directrice": "Founder & Director",
+  "Elvire Roxane Achi": "Elvire Roxane Achi",
+  "Roxane Achi est une jeune scientifique physicienne ivoirienne qui réinvente la manière d’enseigner et de vivre la science. Elle est l’initiatrice de Tech pour science afin d’apprendre les disciplines scientifique en utilisant les technologies immersive . Animée par une passion pour l’art 3D, la technologie et la science, Roxane imagine des univers interactifs où les étudiants peuvent explorer le corps humain en 3D, voyager au cœur d’une cellule ou assister virtuellement à des phénomènes physiques complexes. Pour elle, l’éducation scientifique ne doit pas être un simple apprentissage, mais une expérience inoubliable et émotionnelle qui éveille la curiosité, favorise l’esprit critique et inspire les futurs chercheurs et créateurs d’Afrique et du monde .": "Roxane Achi is a young Ivorian physicist reimagining how science is taught and experienced. She founded Tech Pour Science to learn scientific disciplines using immersive technologies. Driven by a passion for 3D art, technology and science, Roxane imagines interactive worlds where students can explore the human body in 3D, travel to the heart of a cell or virtually witness complex physical phenomena. For her, science education should be an unforgettable, emotional experience that sparks curiosity, fosters critical thinking and inspires the next generation of researchers and creators in Africa and beyond.",
   // Ateliers list subtitle and meta locations
   "Listing des ateliers à venir.": "Upcoming workshops",
   "Abidjan — Lycée Classique": "Abidjan — Lycée Classique",
@@ -104,10 +113,10 @@ export const EN_DICT: Record<string, string> = {
   "Affichez ici les logos et liens des sponsors, institutions publiques et ONG.": "Show logos and links for sponsors, public institutions and NGOs here.",
   // Impacts
   "Impacts attendus": "Expected impacts",
-  "Compréhension renforcée": "Stronger understanding",
+  "Compréhension scientifique renforcée": "Stronger scientific understanding",
   "Phénomènes simulés en 3D/VR": "Phenomena simulated in 3D/VR",
   "Orientation vers filières STEM": "Orientation towards STEM tracks",
-  "+ Représentation féminine": "+ Female representation",
+  "Contribuer à l’augmentation du nombre de femme en science": "Contribute to increasing the number of women in science",
   // Blog
   "Blog scientifique": "Science blog",
   "Articles rédigés par étudiants et chercheurs.": "Articles written by students and researchers.",

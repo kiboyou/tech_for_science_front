@@ -11,9 +11,7 @@ export function Galerie({ t }: { t: (s: string) => string }) {
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
           <SectionTitle title={t("Galerie")} />
           <div className="mt-2 flex justify-center sm:justify-end">
-            <a href="/galerie" className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white/20 backdrop-blur-sm px-4 py-2 text-sm text-slate-700 shadow-sm hover:bg-white/30 transition dark:border-white/10 dark:bg-white/5 dark:text-white">
-              {t('Voir toute la galerie')}
-            </a>
+            <a href="/galerie" className="btn-pill btn-ghost">{t('Voir toute la galerie')}</a>
           </div>
         </div>
         {items.length === 0 ? (

@@ -6,7 +6,7 @@ import { SectionContainer } from "@/front/components/ui/SectionContainer";
 import { SectionTitle } from "@/front/components/ui/SectionTitle";
 import { COPY } from "@/front/lib/copy";
 import { Beaker, Box, Brain, Cpu, GalleryHorizontal, Users } from "lucide-react";
-import Image from "next/image";
+// no Next/Image needed for video
 
 export function Features({ t }: { t: (s: string) => string }) {
   // Mapping explicite basé sur l'intitulé pour éviter la dépendance à l'ordre
@@ -26,7 +26,18 @@ export function Features({ t }: { t: (s: string) => string }) {
             <div className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-[rgba(241,192,22,0.25)] via-[rgba(241,192,22,0.10)] to-transparent blur-2xl opacity-70 group-hover:opacity-90 transition" />
             <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/70 dark:ring-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md shadow-sm">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(241,192,22,0.18),transparent_70%)] pointer-events-none" />
-              <Image src="https://res.cloudinary.com/djhpmgfha/image/upload/v1757977673/IMG_0547_qwddc6.jpg" alt="features" width={1000} height={800} className="w-full h-full object-cover aspect-[4/3]" />
+              <video
+                src="https://res.cloudinary.com/djhpmgfha/video/upload/v1758329577/WhatsApp_Video_2025-09-19_at_22.54.29_tekjz2.mp4"
+                className="w-full h-full object-cover aspect-[4/3]"
+                controls
+                playsInline
+                muted
+                loop
+                autoPlay
+                aria-label="Présentation — Ce que nous faisons"
+              >
+                Votre navigateur ne supporte pas la lecture vidéo HTML5.
+              </video>
             </div>
           </div>
         </Reveal>

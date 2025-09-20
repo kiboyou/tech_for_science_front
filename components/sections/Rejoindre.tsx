@@ -20,7 +20,7 @@ export function Rejoindre({ t }: { t: (s: string) => string }) {
   <div className="mt-10 grid md:grid-cols-3 gap-6">
     {COPY.rejoindreCards.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.08}>
-              <div className="rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+              <div className="form-card rounded-2xl border border-slate-300 bg-white/80 backdrop-blur-sm p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <h3 className="font-semibold flex items-center gap-2">
                   <HeartHandshake className="h-5 w-5" /> {t(c.title)}
                 </h3>

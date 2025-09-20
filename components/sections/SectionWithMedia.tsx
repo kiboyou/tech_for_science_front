@@ -24,7 +24,7 @@ export function SectionWithMedia({ id, title, subtitle, points = [], paragraphs 
           <Reveal effect={reverse ? 'slideRight' : 'slideLeft'} className="lg:col-span-5">
             <div className="relative group">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[rgba(241,192,22,0.25)] to-[rgba(241,192,22,0.05)] blur-xl opacity-60 group-hover:opacity-80 transition" />
-              <div className="relative rounded-3xl overflow-hidden ring-1 ring-slate-200 dark:ring-white/10 shadow-xl shadow-edu-primary/10">
+              <div className="relative rounded-3xl overflow-hidden ring-1 ring-slate-200/60 dark:ring-white/10">
                 {isVideo ? (
                   <video src={mediaUrl} autoPlay muted loop playsInline className="w-full h-full object-cover aspect-[4/3]" />
                 ) : (

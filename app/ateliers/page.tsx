@@ -41,52 +41,82 @@ export default function AteliersIndex() {
   const filteredAteliers = useMemo(() => {
     const base = (ateliers || []).slice();
     const now = new Date();
+    const normalize = (s?: string | null) => (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
     return base
-      .filter(a => {
+      .filter((a) => {
         if (!themes.length) return true;
-        const hay = `${a.title || ''} ${a.summary || ''} ${a.content || ''}`.toLowerCase();
-        return themes.some(key => {
-          const def = THEME_DEFS.find(d => d.key === key);
-          return def ? def.keywords.some(k => hay.includes(k)) : false;
+  const hay = normalize(`${a.title || ""} ${a.slug || ""} ${a.summary || ""} ${a.content || ""} ${a.location || ""}`);
+        return themes.some((key) => {
+          const def = THEME_DEFS.find((d) => d.key === key);
+          return def ? def.keywords.some((k) => hay.includes(normalize(k))) : false;
         });
       })
-      .filter(a => {
+      .filter((a) => {
         if (!upcomingOnly) return true;
-        if (!a.start_date) return false;
-        const d = new Date(a.start_date);
-        return d >= now;
+  const start = a.start_date ? new Date(a.start_date) : null;
+  const end = a.end_date ? new Date(a.end_date) : null;
+        if (end) return end >= now; // include ongoing or future events
+        if (start) return start >= now;
+        return false;
       });
   }, [ateliers, themes, upcomingOnly]);
+
+  const hasActiveFilters = themes.length > 0 || upcomingOnly;
 
   return (
     <div className="min-h-screen flex flex-col">
       <ClientHeader />
       <main className="flex-1 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-16">
         <SectionTitle title={t(COPY.ateliersTitle)} />
+        <div className="mt-2 flex justify-center sm:justify-end">
+          <a href="/#ateliers" className="btn-pill btn-ghost">Retour à la section</a>
+        </div>
         {/* Filtres au style des onglets Infos */}
         <section className="mt-6">
           <div className="flex flex-wrap justify-center gap-2">
             <button
+              type="button"
               onClick={() => setThemes([])}
+              aria-pressed={themes.length === 0}
               className={`px-4 py-2 rounded-xl border text-sm ${themes.length===0 ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
             >Tous</button>
             {THEME_DEFS.map(def => (
               <button
                 key={def.key}
+                type="button"
                 onClick={() => setThemes(prev => prev.includes(def.key) ? prev.filter(k=>k!==def.key) : [...prev, def.key])}
+                aria-pressed={themes.includes(def.key)}
                 className={`px-4 py-2 rounded-xl border text-sm ${themes.includes(def.key) ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
               >{def.label}</button>
             ))}
             <button
+              type="button"
               onClick={() => setUpcomingOnly(v=>!v)}
+              aria-pressed={upcomingOnly}
               className={`px-4 py-2 rounded-xl border text-sm ${upcomingOnly ? 'bg-[rgb(var(--edu-primary))] text-slate-900 border-transparent' : 'border-slate-300 bg-white/20 dark:bg-white/10 dark:border-white/10'}`}
             >À venir seulement</button>
           </div>
         </section>
-        {promoted && promoted.length ? (
+        {ateliers && ateliers.length > 0 && filteredAteliers.length === 0 ? (
+          <div className="mt-6 text-center text-slate-600 dark:text-slate-300">
+            <p>Aucun atelier ne correspond à ces filtres.</p>
+            <div className="mt-3 flex justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => { setThemes([]); setUpcomingOnly(false); }}
+                className="btn-pill btn-ghost"
+              >Réinitialiser les filtres</button>
+            </div>
+          </div>
+        ) : null}
+        {!hasActiveFilters && promoted && promoted.length ? (
           <div className="mt-8">
             {promoted.slice(0, 1).map((p) => (
-              <article key={p.slug} className="rounded-2xl border border-amber-300 bg-amber-100/40 dark:bg-amber-200/10 dark:border-amber-200/30 overflow-hidden shadow-sm">
+              <article key={p.slug} className="rounded-2xl border border-amber-300 bg-amber-100/40 dark:bg-amber-200/10 dark:border-amber-200/30 overflow-hidden">
                 <div className="grid md:grid-cols-2">
                   <div className="relative overflow-hidden min-h-[220px] md:min-h-[320px] bg-slate-100/60 dark:bg-slate-800">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -124,7 +154,7 @@ export default function AteliersIndex() {
           {filteredAteliers.map((a, i) => (
             <article
               key={a.slug || a.title || i}
-              className="rounded-2xl border border-slate-300 bg-white/20 backdrop-blur-sm p-0 shadow-sm dark:border-white/10 dark:bg-white/5 overflow-hidden"
+              className="rounded-2xl border border-slate-200/60 bg-white/20 backdrop-blur-sm p-0 dark:border-white/10 dark:bg-white/5 overflow-hidden"
             >
               <div className="relative w-full aspect-[3/2] overflow-hidden min-h-[200px] md:min-h-[260px] bg-slate-100/60 dark:bg-slate-800">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

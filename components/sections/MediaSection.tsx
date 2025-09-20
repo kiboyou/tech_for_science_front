@@ -29,7 +29,7 @@ export function MediaSection({ id, title, subtitle, children, mediaUrl, mediaAlt
           <Reveal effect={reverse ? "slideRight" : "slideLeft"} className="lg:col-span-5">
             <div className="relative">
               <div className="absolute inset-0 rounded-3xl bg-[rgba(241,192,22,0.15)] blur-xl opacity-50" />
-              <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/70 dark:ring-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-sm shadow-sm">
+              <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/50 dark:ring-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-sm">
                 <Image src={mediaUrl} alt={mediaAlt} width={1000} height={800} className="w-full h-full object-cover aspect-[4/3]" />
               </div>
             </div>

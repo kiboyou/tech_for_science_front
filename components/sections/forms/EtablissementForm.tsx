@@ -58,19 +58,19 @@ export function EtablissementForm({ onSuccess }: { onSuccess?: () => void }) {
     >
       <p className="text-sm text-slate-600 dark:text-slate-300">{t("Invitez Tech Pour Science dans votre établissement et offrez une expérience scientifique unique à vos élèves.")}</p>
       {error ? <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">{error}</div> : null}
-      <input required name="etab" placeholder={t("Nom de l’établissement")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="nom" placeholder={t("Nom & Prénom du responsable")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="fonction" placeholder={t("Fonction")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required type="email" name="email" placeholder={t("Email")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="tel" placeholder={t("Téléphone")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
+  <input required name="etab" placeholder={t("Nom de l’établissement")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="nom" placeholder={t("Nom & Prénom du responsable")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="fonction" placeholder={t("Fonction")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required type="email" name="email" placeholder={t("Email")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="tel" placeholder={t("Téléphone")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
       <fieldset className="grid gap-1">
         <legend className="text-sm">{t("Type de partenariat souhaité")}</legend>
         {['Ateliers','Conférences','Expositions','Formation','Autre'].map(v=> (
           <label key={v} className="flex items-center gap-2"><input type="checkbox" name="partenariat" value={v}/> {t(v)}</label>
         ))}
       </fieldset>
-      <input name="participants" type="number" min={0} placeholder={t("Nombre estimé de participants (optionnel)")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-  <textarea name="details" placeholder={t("Message / Détails de la demande")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" rows={4} />
+    <input name="participants" type="number" min={0} placeholder={t("Nombre estimé de participants (optionnel)")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <textarea name="details" placeholder={t("Message / Détails de la demande")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" rows={4} />
   <button disabled={loading} type="submit" className="mt-1 px-5 py-3 rounded-2xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition w-fit disabled:opacity-60">{t("Proposer un partenariat")}</button>
     </form>
   );

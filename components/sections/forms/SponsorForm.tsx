@@ -47,18 +47,18 @@ export function SponsorForm({ onSuccess }: { onSuccess?: () => void }) {
     }}>
       <p className="text-sm text-slate-600 dark:text-slate-300">{t("Soutenez nos actions et aidez-nous à équiper, former et accompagner la jeunesse.")}</p>
       {error ? <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 px-3 py-2 text-sm dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">{error}</div> : null}
-      <input required name="org" placeholder={t("Nom de l’organisation / Entreprise")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="nom" placeholder={t("Nom & Prénom du soumettant")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input name="fonction" placeholder={t("Fonction (optionnel)")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required type="email" name="email" placeholder={t("Email")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
-      <input required name="tel" placeholder={t("Téléphone")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" />
+  <input required name="org" placeholder={t("Nom de l’organisation / Entreprise")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="nom" placeholder={t("Nom & Prénom du soumettant")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input name="fonction" placeholder={t("Fonction (optionnel)")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required type="email" name="email" placeholder={t("Email")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
+  <input required name="tel" placeholder={t("Téléphone")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" />
       <fieldset className="grid gap-1">
         <legend className="text-sm">{t("Type de soutien")}</legend>
         {['Institutionnel','Financier','Matériel','Logistique','Bourses','Autre'].map(v=> (
           <label key={v} className="flex items-center gap-2"><input type="checkbox" name="soutien" value={v}/> {t(v)}</label>
         ))}
       </fieldset>
-  <textarea name="message" placeholder={t("Message complémentaire")} className="bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[rgb(var(--edu-primary))] dark:bg-white/5 dark:border-white/10" rows={4} />
+  <textarea name="message" placeholder={t("Message complémentaire")} className="form-control bg-white/20 backdrop-blur-sm border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-0 dark:bg-white/5 dark:border-white/10" rows={4} />
   <button disabled={loading} type="submit" className="mt-1 px-5 py-3 rounded-2xl bg-[rgb(var(--edu-primary))] text-slate-900 font-semibold hover:bg-[#f5cd43] transition w-fit disabled:opacity-60">{t("Devenir sponsor")}</button>
     </form>
   );

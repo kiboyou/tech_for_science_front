@@ -117,7 +117,7 @@ export function Objectifs({ t }: { t: (s: string) => string }) {
                   <CategoryCard title="Sociaux" items={sociaux} tone="red" badgeIcon={Users2} />
                 </div>
                 <CategoryCard
-                  title="ODD"
+                  title="Objectifs de développement durable (ODD)"
                   items={odd}
                   tone="green"
                   badgeIcon={GraduationCap}

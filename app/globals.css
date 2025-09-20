@@ -88,49 +88,13 @@
   animation-delay: 0.25s;
 }
 
-/* Subtle animated background visuals */
+/* Subtle animated background visuals (disabled for pure light/dark) */
 :root {
   --grid-color: rgba(255, 255, 255, 0.03);
 }
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(
-      60rem 30rem at 20% -10%,
-      rgba(52, 211, 153, 0.12),
-      transparent
-    ),
-    radial-gradient(
-      50rem 25rem at 110% 10%,
-      rgba(163, 230, 53, 0.1),
-      transparent
-    );
-  pointer-events: none;
-  z-index: -20;
-}
-
+body::before,
 body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-size: 40px 40px;
-  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  mask-image: radial-gradient(70% 60% at 50% 40%, black, transparent);
-  pointer-events: none;
-  z-index: -20;
-  animation: gridFade 12s ease-in-out infinite alternate;
-}
-
-@keyframes gridFade {
-  0% {
-    opacity: 0.25;
-  }
-  100% {
-    opacity: 0.45;
-  }
+  content: none !important;
 }
 
 main,
@@ -182,7 +146,7 @@ footer {
 
 /* Light theme adjustments */
 :root[data-theme="light"] body {
-  background-color: #f8fafc;
+  background-color: #ffffff; /* pure white */
   color: rgb(var(--edu-body));
 }
 :root[data-theme="light"] .text-gradient {
@@ -192,20 +156,14 @@ footer {
   background: rgba(0, 0, 0, 0.04);
   border-color: rgba(0, 0, 0, 0.08);
 }
-:root[data-theme="light"] body::before {
-  background-image: radial-gradient(
-      60rem 30rem at 20% -10%,
-      rgba(241, 192, 22, 0.2),
-      transparent
-    ),
-    radial-gradient(
-      50rem 25rem at 110% 10%,
-      rgba(45, 171, 178, 0.18),
-      transparent
-    );
-}
+:root[data-theme="light"] body::before,
 :root[data-theme="light"] body::after {
-  --grid-color: rgba(0, 0, 0, 0.06);
+  content: none !important;
+}
+
+/* Dark mode pure black background */
+:root[data-theme="dark"] body {
+  background-color: #000000; /* pure black */
 }
 
 /* slow pulse for blobs */
@@ -242,7 +200,7 @@ footer {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.25rem;
-  box-shadow: var(--shadow-soft, 0 10px 40px rgba(0, 0, 0, 0.35));
+  box-shadow: var(--shadow-soft, 0 1px 2px rgba(0, 0, 0, 0.06));
 }
 
 .gradient-border {
@@ -286,4 +244,259 @@ h4,
   font-family: "SF Pro Display", "SF Pro Text", -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui,
     sans-serif;
+}
+
+/* ————— Global removal of shadows and borders (flat style) ————— */
+/* Remove all box-shadows globally */
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+}
+
+/* Neutralize Tailwind shadow utilities explicitly (fallback) */
+.shadow,
+.shadow-sm,
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl,
+.hover\:shadow-sm:hover,
+.hover\:shadow-md:hover,
+.hover\:shadow-lg:hover,
+.hover\:shadow-xl:hover {
+  box-shadow: none !important;
+}
+
+/* Remove borders for any element using Tailwind border utilities */
+.border,
+.border-0,
+.border-2,
+.border-4,
+.border-8,
+.border-b,
+.border-t,
+.border-l,
+.border-r,
+[class^="border-"],
+[class*=" border-"] {
+  border: 0 !important;
+}
+
+/* Make any remaining border colors transparent just in case */
+.border-slate-200,
+.border-slate-300,
+.border-slate-400,
+.border-slate-200\/60,
+.border-slate-300\/80,
+.border-slate-400\/80,
+.dark\:border-white\/10,
+.border-white,
+.border-white\/60 {
+  border-color: transparent !important;
+}
+
+/* Neutralize ring effects */
+.ring,
+.ring-1,
+.ring-2,
+.ring-4,
+.ring-8,
+[class^="ring-"],
+[class*=" ring-"] {
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+/* Global flattening overrides */
+/* Neutralize most Tailwind shadow utilities */
+.shadow,
+.shadow-sm,
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl,
+.hover\:shadow-sm:hover,
+.hover\:shadow-md:hover,
+.hover\:shadow-lg:hover,
+.hover\:shadow-xl:hover {
+  box-shadow: none !important;
+}
+
+/* Soften common border utilities */
+.border-slate-300 {
+  border-color: rgb(226 232 240 / 0.6) !important;
+}
+.border-slate-300\/80 {
+  border-color: rgb(226 232 240 / 0.6) !important;
+}
+.border-slate-400\/80 {
+  border-color: rgb(203 213 225 / 0.5) !important;
+}
+.border-slate-200 {
+  border-color: rgb(226 232 240 / 0.6) !important;
+}
+.border-white\/60 {
+  border-color: rgb(255 255 255 / 0.4) !important;
+}
+
+/* Lighten common ring colors */
+.ring-slate-200 {
+  --tw-ring-color: rgb(226 232 240 / 0.5) !important;
+}
+.ring-slate-200\/70 {
+  --tw-ring-color: rgb(226 232 240 / 0.45) !important;
+}
+
+/* —— Targeted exceptions: re-enable borders for forms —— */
+/* Inputs/selects/textareas inside forms should have clear borders */
+:where(form)
+  :is(
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input:not([type])
+  ),
+:where(form) select,
+:where(form) textarea {
+  border-width: 1px !important;
+  border-color: rgb(203 213 225 / 0.35) !important; /* lighter slate-300 */
+  border-style: solid !important;
+}
+
+/* Accessible, flat focus style for form controls: yellow border */
+:where(form)
+  :is(
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input:not([type])
+  ):focus,
+:where(form) select:focus,
+:where(form) textarea:focus {
+  outline: none !important;
+  border-color: rgb(var(--edu-primary)) !important;
+  border-width: 2px !important;
+  box-shadow: none !important;
+}
+
+/* Slight hover hint to reinforce field affordance (light only) */
+:root[data-theme="light"]
+  :where(form)
+  :is(
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input:not([type])
+  ):hover,
+:root[data-theme="light"] :where(form) select:hover,
+:root[data-theme="light"] :where(form) textarea:hover {
+  border-color: rgb(148 163 184 / 0.6) !important; /* subtle slate-400 */
+}
+
+/* Form containers: no visible borders (keep ultra-flat) */
+.form-card,
+.modal-panel {
+  border: 0 !important;
+}
+
+/* Explicit utility for form controls (extra safety) */
+.form-control {
+  border-width: 1px !important;
+  border-color: rgb(203 213 225 / 0.35) !important;
+  border-style: solid !important;
+}
+.form-control:focus {
+  border-color: rgb(var(--edu-primary)) !important;
+  border-width: 2px !important;
+  outline: none !important;
+}
+
+/* Dark mode adjustments */
+:root[data-theme="dark"]
+  :where(form)
+  :is(
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input:not([type])
+  ),
+:root[data-theme="dark"] :where(form) select,
+:root[data-theme="dark"] :where(form) textarea {
+  border-color: rgba(255, 255, 255, 0.16) !important; /* lighter */
+}
+
+:root[data-theme="dark"] .form-card,
+:root[data-theme="dark"] .modal-panel {
+  border: 0 !important;
+}
+
+/* —— Reusable Button Utilities —— */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease,
+    border-color 160ms ease, transform 160ms ease;
+}
+@media (min-width: 640px) {
+  /* sm */
+  .btn-pill {
+    padding: 0.625rem 1.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.btn-ghost {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.12); /* ~slate-900/12 */
+  color: rgb(51, 65, 85); /* slate-700 */
+  backdrop-filter: saturate(120%) blur(6px);
+}
+.btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+.btn-ghost:focus-visible {
+  outline: 2px solid rgb(var(--edu-primary));
+  outline-offset: 0;
+}
+
+:root[data-theme="dark"] .btn-ghost {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgb(241, 245, 249); /* slate-100 */
+}
+:root[data-theme="dark"] .btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-icon {
+  width: 1rem;
+  height: 1rem;
+}
+@media (min-width: 640px) {
+  .btn-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
