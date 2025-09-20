@@ -12,8 +12,10 @@ import { useEffect, useMemo, useState } from "react";
 
 const THEME_DEFS: { key: string; label: string; keywords: string[] }[] = [
   { key: 'ia', label: 'IA', keywords: ['ia', 'intelligence artificielle', 'ai'] },
-  { key: 'robotique', label: 'Robotique', keywords: ['robot', 'robotique'] },
-  { key: 'vr3d', label: 'VR/3D', keywords: ['vr', '3d', 'réalité virtuelle', 'realite virtuelle', 'immersive'] },
+  // Renamed to "Robotique virtuelle" and absorbs VR-related terms
+  { key: 'robotique', label: 'Robotique virtuelle', keywords: ['robot', 'robotique', 'vr', 'réalité virtuelle', 'realite virtuelle', 'immersive', 'virtuelle'] },
+  // Renamed to "3D" and restricted to 3D-related terms only
+  { key: 'vr3d', label: '3D', keywords: ['3d', 'modélisation', 'modelisation', 'impression 3d', 'modele 3d'] },
   { key: 'stem', label: 'STEM', keywords: ['stem', 'science', 'tech', 'technologie', 'math', 'ingénierie', 'ingenierie'] },
 ];
 

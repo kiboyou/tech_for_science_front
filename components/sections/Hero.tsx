@@ -26,23 +26,33 @@ export function Hero({ t, scene, setScene }: { t: (s: string) => string; scene: 
     <section id="home" className="relative overflow-hidden">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
-          {/* 3D à droite uniquement dès md */}
-          {isMdUp && (
-            <div className="order-2 lg:order-2">
-              <div className="relative h-80 sm:h-[380px] lg:h-[520px] xl:h-[580px] rounded-2xl overflow-hidden">
-                <Canvas camera={{ fov: 42, position: [0, 1.0, 4.6] }}>
-                  <ambientLight intensity={0.6} />
-                  <directionalLight position={[3, 4, 5]} intensity={0.9} />
-                  <Environment preset="city" />
-                  {scene === "atom" && <AtomOrbits />}
-                  {scene === "molecule" && <Molecule />}
-                  {scene === "lab" && <PhysicsLab />}
-                  {scene === "saturn" && <Saturn />}
-                  <OrbitControls enablePan={false} target={[0, 1.0, 0]} minDistance={4.6} maxDistance={22} zoomSpeed={1.4} />
-                </Canvas>
-              </div>
+          {/* 3D viewer (visible on all breakpoints; sits to the right on lg) */}
+          <div className="order-2 lg:order-2">
+            <div className="relative h-80 sm:h-[380px] lg:h-[520px] xl:h-[580px] rounded-2xl overflow-hidden">
+              {(() => {
+                const camFov = scene === "molecule" ? 48 : 48;
+                const camPos: [number, number, number] = scene === "molecule" ? [0, 1.0, 7.2] : [0, 1.0, 8.2];
+                const minDist = scene === "molecule" ? 5.8 : 6.0;
+                const maxDist = scene === "molecule" ? 25 : 24;
+                const target: [number, number, number] = scene === "molecule" ? [0, 0, 0] : [0, 1.0, 0];
+                return (
+                  <Canvas key={scene} camera={{ fov: camFov, position: camPos }}>
+                    <ambientLight intensity={0.6} />
+                    <directionalLight position={[3, 4, 5]} intensity={0.9} />
+                    <Environment preset="city" />
+                    {scene === "atom" && <AtomOrbits />}
+                    {scene === "molecule" && <Molecule />}
+                    {scene === "lab" && <PhysicsLab />}
+                    {scene === "saturn" && <Saturn />}
+                    <OrbitControls enablePan={false} target={target} minDistance={minDist} maxDistance={maxDist} zoomSpeed={1.4} />
+                  </Canvas>
+                );
+              })()}
             </div>
-          )}
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              {t("Vous pouvez manipuler l’élément 3D : faites glisser pour tourner, molette/trackpad pour zoomer.")}
+            </p>
+          </div>
 
           {/* Texte à gauche en desktop (et en second sur mobile) */}
           <div className="order-1 lg:order-1 lg:pr-4 min-w-0">
@@ -65,7 +75,8 @@ export function Hero({ t, scene, setScene }: { t: (s: string) => string; scene: 
               </a>
               <a href="#nousrejoindre" className="w-full sm:w-auto justify-center px-5 py-3 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition inline-flex items-center text-sm sm:text-base dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/10 dark:text-white">{t(COPY.ctaDevenirPartenaire)}</a>
             </div>
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
+            {/* KPIs: hidden on mobile, shown from md+ within text column */}
+            <div className="hidden md:grid mt-8 grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
               {[
                 { label: COPY.heroStats[0], value: 2500, suffix: "+", duration: 2.5, href: "#impacts", Icon: Users },
                 { label: COPY.heroStats[1], value: 4, suffix: "+", duration: 2.0, href: "#equipe", Icon: Building2 },
@@ -88,10 +99,57 @@ export function Hero({ t, scene, setScene }: { t: (s: string) => string; scene: 
                 </a>
               ))}
             </div>
+            {/* Mobile scene selector (dropdown) before scene and KPIs */}
+            {!isMdUp && (
+              <div className="mt-4">
+                <label htmlFor="scene-select" className="block text-xs text-slate-600 mb-1 dark:text-slate-300">
+                  {t("Choisir la scène 3D :")}
+                </label>
+                <select
+                  id="scene-select"
+                  aria-label={t("Choisir la scène 3D")}
+                  value={scene}
+                  onChange={(e) => setScene(e.target.value as any)}
+                  className="form-control w-full bg-white/80 dark:bg-white/10"
+                >
+                  <option value="lab">{t("Physique")}</option>
+                  <option value="saturn">{t("Saturne")}</option>
+                  <option value="atom">{t("Atome")}</option>
+                  <option value="molecule">{t("Molécule")}</option>
+                </select>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Panneau Choisir la scène 3D en bas (masqué sur mobile) */}
+        {/* KPIs on mobile: show after the 3D scene */}
+        {!isMdUp && (
+          <div className="mt-6 grid grid-cols-2 gap-4 text-center">
+            {[
+              { label: COPY.heroStats[0], value: 2500, suffix: "+", duration: 2.5, href: "#impacts", Icon: Users },
+              { label: COPY.heroStats[1], value: 4, suffix: "+", duration: 2.0, href: "#equipe", Icon: Building2 },
+              { label: COPY.heroStats[2], value: 17, suffix: "+", duration: 2.2, href: "#impacts", Icon: TrendingUp },
+            ].map((k) => (
+              <a
+                key={k.label as any}
+                href={k.href}
+                role="button"
+                aria-label={`${t("Aller à")} ${t(k.label as any)}`}
+                className="group rounded-2xl border border-slate-200 bg-white/20 backdrop-blur-sm p-3 min-h-[100px] min-w-0 flex flex-col items-center justify-center transition hover:bg-white/30 hover:shadow-sm hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--edu-primary))] dark:card-glass dark:gradient-border dark:border-white/10 dark:bg.white/5 dark:hover:bg-white/10"
+              >
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[rgba(241,192,22,0.15)] to-white/5 text-[rgb(var(--edu-primary))] ring-1 ring-white/10">
+                  {k.Icon ? <k.Icon className="h-5 w-5" /> : null}
+                </div>
+                <div className="mt-3 text-xl font-extrabold text-slate-900 dark:text-white group-active:scale-[0.98] transition-transform">
+                  <StatsCounter to={k.value as number} suffix={k.suffix as string} duration={k.duration as number} />
+                </div>
+                <div className="text-xs text-slate-500 mt-1 dark:text-slate-300">{t(k.label as any)}</div>
+              </a>
+            ))}
+          </div>
+        )}
+
+  {/* Panneau Choisir la scène 3D en bas (desktop/tablette) */}
         {isMdUp && (
           <div className="mt-10">
             <div className="rounded-3xl bg-white/20 backdrop-blur-sm p-4 sm:p-6 shadow-md md:shadow-lg dark:bg-slate-900/70">
