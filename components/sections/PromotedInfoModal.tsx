@@ -10,28 +10,10 @@ export function PromotedInfoModal() {
   const [showAnim, setShowAnim] = useState(false);
 
   useEffect(() => {
-    // Respect user dismissal for 24h, except in dev or when ?promo=1
-    const forceShow = (() => {
-      try {
-        const qs = new URLSearchParams(window.location.search);
-        return qs.get("promo") === "1";
-      } catch { return false; }
-    })();
-
-    if (!forceShow && process.env.NODE_ENV !== "development") {
-      try {
-        const ts = localStorage.getItem("tps:infos:promo:dismissedAt");
-        if (ts) {
-          const delta = Date.now() - Number(ts);
-          if (!isNaN(delta) && delta < 24 * 60 * 60 * 1000) return;
-        }
-      } catch {}
-    }
-
     api.getInfosPromoted()
       .then(async (list) => {
         let first = list?.[0];
-        if (!first && forceShow) {
+        if (!first) {
           try {
             const all = await api.getInfos();
             first = all?.[0];
@@ -53,7 +35,6 @@ export function PromotedInfoModal() {
   }, [visible]);
 
   const handleClose = () => {
-    try { localStorage.setItem("tps:infos:promo:dismissedAt", String(Date.now())); } catch {}
     setShowAnim(false);
     setTimeout(() => setVisible(false), 180);
   };
